@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ProyectsView extends StatelessWidget {
   const ProyectsView({super.key});
@@ -18,7 +19,9 @@ class ProyectsView extends StatelessWidget {
                 backgroundColor: Colors.blue, // Background color
               ),
 
-              onPressed: () {},
+              onPressed: () {
+                context.goNamed('proyects');
+              },
 
               child: Text('Agregar Proyecto'),
             ),
