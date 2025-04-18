@@ -30,14 +30,10 @@ class _CustomBottomnavigationbarState extends State<CustomBottomnavigationbar> {
             label: 'Home'
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.work),
-            label: 'Work'
+            icon: Icon(Icons.favorite),
+            label: 'Proyects'
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.task_alt_rounded),
-            label: 'person'
-          )
-          
+       
                 
       ],
     );

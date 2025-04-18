@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String greeting;
@@ -23,7 +24,9 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
                   'https://avatars.githubusercontent.com/u/201642198?s=96&v=4',
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                context.goNamed('profile');
+              },
             ),
             SizedBox(width: 8),
             Column(
@@ -41,7 +44,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
               ],
             ),
             Spacer(),
-            IconButton(icon: Icon(Icons.search), onPressed: () {}),
+            IconButton(icon: Icon(Icons.color_lens), onPressed: () {}),
           ],
         ),
       ),

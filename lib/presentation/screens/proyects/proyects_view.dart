@@ -3,8 +3,27 @@ import 'package:flutter/material.dart';
 class ProyectsView extends StatelessWidget {
   const ProyectsView({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Ventana de proyectos'));
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('menu'),
+              SizedBox(height: 580), // Add spacing between the text and button
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue, // Background color
+                ),
+                onPressed: () {},
+                child: Text('Agregar Proyecto'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
-}
+
