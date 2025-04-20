@@ -14,11 +14,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int _selectedScreen = 0;
 
-  final List<Widget> _screens = [
-    const HomeContent(), 
-    const ProyectsView()
-    
-    ];
+  final List<Widget> _screens = [const HomeContent(), const ProyectsView()];
 
   @override
   Widget build(BuildContext context) {

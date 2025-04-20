@@ -1,28 +1,35 @@
 import 'package:flutter/material.dart';
 
 class CustomDatepicker extends StatefulWidget {
-  const CustomDatepicker({super.key});
+  final Function(DateTime startDate, DateTime? endDate) onDateSelected;
+
+  const CustomDatepicker({super.key, required this.onDateSelected});
 
   @override
   State<CustomDatepicker> createState() => _CustomDatepickerState();
 }
 
 class _CustomDatepickerState extends State<CustomDatepicker> {
-  DateTime? _selectedDate;
-  final TextEditingController _dateController = TextEditingController();
+  DateTime _startDate = DateTime.now();
+  DateTime? _endDate;
 
-  Future<void> _selectDate() async {
+  Future<void> _selectDate(BuildContext context, bool isStartDate) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: _selectedDate ?? DateTime.now(),
-      firstDate: DateTime.now(),
+      initialDate: isStartDate ? _startDate : _endDate ?? _startDate,
+      firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
-    if (picked != null && picked != _selectedDate) {
+
+    if (picked != null) {
       setState(() {
-        _selectedDate = picked;
-        _dateController.text = '${picked.day}/${picked.month}/${picked.year}';
+        if (isStartDate) {
+          _startDate = picked;
+        } else {
+          _endDate = picked;
+        }
       });
+      widget.onDateSelected(_startDate, _endDate);
     }
   }
 
@@ -31,20 +38,29 @@ class _CustomDatepickerState extends State<CustomDatepicker> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Plazo', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('Fecha de inicio', style: TextStyle(fontWeight: FontWeight.bold)),
         SizedBox(height: 8),
-        TextFormField(
-          controller: _dateController,
-          readOnly: true, // Evita que el usuario escriba manualmente
-          decoration: InputDecoration(
-            hintText: 'Seleccione una fecha',
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(19)),
-            suffixIcon: IconButton(
-              icon: Icon(Icons.calendar_today, color: Colors.grey),
-              onPressed: _selectDate,
-            ),
+        ListTile(
+          title: Text(
+            '${_startDate.day}/${_startDate.month}/${_startDate.year}',
           ),
-          onTap: _selectDate, // Abre el date picker al tocar el campo
+          trailing: Icon(Icons.calendar_today),
+          onTap: () => _selectDate(context, true),
+        ),
+        SizedBox(height: 16),
+        Text(
+          'Fecha de fin (opcional)',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 8),
+        ListTile(
+          title: Text(
+            _endDate == null
+                ? 'No seleccionada'
+                : '${_endDate!.day}/${_endDate!.month}/${_endDate!.year}',
+          ),
+          trailing: Icon(Icons.calendar_today),
+          onTap: () => _selectDate(context, false),
         ),
       ],
     );

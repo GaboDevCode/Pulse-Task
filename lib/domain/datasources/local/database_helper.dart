@@ -1,3 +1,4 @@
+import 'package:pulse_task/domain/models/proyect_model/proyecto.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -29,8 +30,39 @@ class DatabaseHelper {
         categoria TEXT NOT NULL,
         fechaInicio TEXT NOT NULL,
         fechaFin TEXT
-        
         )
     ''');
+  }
+
+  Future<int> createProyecto(Proyecto proyecto) async {
+    final db = await instance.database;
+    return await db.insert('proyectos', proyecto.toMap());
+  }
+
+  Future<List<Proyecto>> readallProyectos() async {
+    final db = await instance.database;
+    final result = await db.query('proyectos');
+    return result.map((map) => Proyecto.fromMap(map)).toList();
+  }
+
+  Future<int> updateProyecto(Proyecto proyecto) async {
+    final db = await instance.database;
+    return await db.update(
+      'proyectos',
+      proyecto.toMap(),
+      where: 'id=?',
+      whereArgs: [proyecto.id],
+    );
+  }
+
+  Future<int> deleteProyecto(int id) async {
+    final db = await instance.database;
+
+    return await db.delete('proyectos', where: 'id=?', whereArgs: [id]);
+  }
+
+  Future close() async {
+    final db = await instance.database;
+    db.close();
   }
 }
