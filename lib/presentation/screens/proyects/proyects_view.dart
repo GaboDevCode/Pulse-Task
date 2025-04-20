@@ -3,26 +3,30 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:pulse_task/presentation/providers/project_provider/projectprovider.dart';
 
-class ProyectsView extends StatelessWidget {
+class ProyectsView extends StatefulWidget {
   const ProyectsView({super.key});
 
   @override
+  State<ProyectsView> createState() => _ProyectsViewState();
+}
+
+class _ProyectsViewState extends State<ProyectsView> {
+  @override
+  void initState() {
+    super.initState();
+    // Carga inicial de los proyectos
+    Future.microtask(
+      () =>
+          // ignore: use_build_context_synchronously
+          Provider.of<Projectprovider>(context, listen: false).loadProyectos(),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final proyectoProvider = Provider.of<Projectprovider>(context);
-    final proyectos = proyectoProvider.proyectos;
-    WidgetsBinding.instance.addPersistentFrameCallback((_) {
-      proyectoProvider.loadProyectos();
-    });
+    final proyectos = context.watch<Projectprovider>().proyectos;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Mis Proyectos'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () => proyectoProvider.loadProyectos(),
-          ),
-        ],
-      ),
       body:
           proyectos.isEmpty
               ? Center(child: Text('No hay proyectos creados'))
@@ -38,7 +42,10 @@ class ProyectsView extends StatelessWidget {
                       trailing: IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: () async {
-                          await proyectoProvider.deleteProyecto(proyecto.id!);
+                          await Provider.of<Projectprovider>(
+                            context,
+                            listen: false,
+                          ).deleteProyecto(proyecto.id!);
                         },
                       ),
                       onTap: () {
@@ -51,7 +58,6 @@ class ProyectsView extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          // Navegar a la pantalla de creación de proyectos
           context.goNamed('proyects');
         },
       ),

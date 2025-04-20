@@ -10,6 +10,7 @@ class Projectprovider extends ChangeNotifier {
 
   Future<void> loadProyectos() async {
     _proyectos = await _databaseHelper.readallProyectos();
+    notifyListeners();
   }
 
   Future<void> addProyecto(Proyecto proyecto) async {
