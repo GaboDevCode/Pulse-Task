@@ -38,19 +38,23 @@ class _CustomDatepickerState extends State<CustomDatepicker> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Fecha de inicio', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          'Fecha de inicio',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
         SizedBox(height: 8),
         ListTile(
           title: Text(
             '${_startDate.day}/${_startDate.month}/${_startDate.year}',
+            style: TextStyle(color: Colors.white),
           ),
-          trailing: Icon(Icons.calendar_today),
+          trailing: Icon(Icons.calendar_today, color: Colors.white),
           onTap: () => _selectDate(context, true),
         ),
         SizedBox(height: 16),
         Text(
           'Fecha de fin (opcional)',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         SizedBox(height: 8),
         ListTile(
@@ -58,8 +62,9 @@ class _CustomDatepickerState extends State<CustomDatepicker> {
             _endDate == null
                 ? 'No seleccionada'
                 : '${_endDate!.day}/${_endDate!.month}/${_endDate!.year}',
+            style: TextStyle(color: Colors.white),
           ),
-          trailing: Icon(Icons.calendar_today),
+          trailing: Icon(Icons.calendar_today, color: Colors.white),
           onTap: () => _selectDate(context, false),
         ),
       ],

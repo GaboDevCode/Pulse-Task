@@ -19,7 +19,8 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(greeting: 'hola', name: 'Lalo'),
+      backgroundColor: const Color(0xFF222121),
+      appBar: CustomAppbar(greeting: 'Bienvenido', name: 'Pulse Task'),
       body: _screens[_selectedScreen],
       bottomNavigationBar: CustomBottomnavigationbar(
         onTabSelected: (index) => setState(() => _selectedScreen = index),

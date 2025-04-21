@@ -13,7 +13,16 @@ class DetailsproyectView extends StatelessWidget {
   Widget build(BuildContext context) {
     //   final colorTheme = Theme.of(context).colorScheme;
     return Scaffold(
-      appBar: AppBar(title: Text(proyecto.nombre)),
+      backgroundColor: const Color(0xFF222121),
+
+      appBar: AppBar(
+        title: Text(
+          proyecto.nombre,
+          style: TextStyle(color: const Color(0xFFFFFFFF)),
+        ),
+        backgroundColor: const Color(0xFF222121),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -82,10 +91,15 @@ class DetailsproyectView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Tarea',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 19,
+                    color: Color(0xFFFFFFFF),
+                  ),
                 ),
+
                 IconButton(
                   onPressed: () {
                     mostrarFormularioCrearTarea(context, proyecto.id!);
@@ -211,36 +225,40 @@ class _TaskListWidgetState extends State<TaskListWidget> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return SizedBox(
-      height: 400, // altura que quieras para la lista
-      child: Consumer<TaskProvider>(
-        builder: (context, taskprovider, child) {
-          final tareas =
-              taskprovider.tareas
-                  .where((t) => t.proyectoId == widget.proyectoId)
-                  .toList();
+    return Expanded(
+      child: SafeArea(
+        child: Consumer<TaskProvider>(
+          builder: (context, taskprovider, child) {
+            final tareas =
+                taskprovider.tareas
+                    .where((t) => t.proyectoId == widget.proyectoId)
+                    .toList();
 
-          if (tareas.isEmpty) {
-            return const Center(child: Text("No hay tareas aún"));
-          }
+            if (tareas.isEmpty) {
+              return const Center(child: Text("No hay tareas aún"));
+            }
 
-          return ListView.builder(
-            itemCount: tareas.length,
-            itemBuilder: (context, index) {
-              final tarea = tareas[index];
-              return Card(
-                elevation: 6,
-                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-                child: ListTile(
-                  title: Text(tarea.nombre),
-                  subtitle: Text(
-                    _formatDate(tarea.fechaVencimiento ?? DateTime.now()),
+            return ListView.builder(
+              itemCount: tareas.length,
+              itemBuilder: (context, index) {
+                final tarea = tareas[index];
+                return Card(
+                  elevation: 6,
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 4,
                   ),
-                ),
-              );
-            },
-          );
-        },
+                  child: ListTile(
+                    title: Text(tarea.nombre),
+                    subtitle: Text(
+                      _formatDate(tarea.fechaVencimiento ?? DateTime.now()),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

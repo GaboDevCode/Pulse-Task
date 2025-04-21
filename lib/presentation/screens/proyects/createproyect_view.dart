@@ -11,7 +11,13 @@ class CreateproyectView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: Text('Crear proyecto')),
+      backgroundColor: const Color(0xFF222121),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF222121),
+        centerTitle: true,
+        title: Text('Crear proyecto', style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: AddProyect(),
     );
   }
@@ -68,12 +74,20 @@ class _AddProyectState extends State<AddProyect> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Nombre', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              'Nombre',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
             SizedBox(height: 8),
             TextFormField(
               initialValue: _proyect,
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 hintText: 'Objetivo especifico del proyecto',
+                hintStyle: TextStyle(color: Colors.white54),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(19),
                 ),
@@ -93,12 +107,20 @@ class _AddProyectState extends State<AddProyect> {
 
             SizedBox(height: 16),
 
-            Text('Detalles', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              'Detalles',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
             SizedBox(height: 8),
             TextFormField(
               initialValue: _description,
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 hintText: 'Por que es importante este objetivo?',
+                hintStyle: TextStyle(color: Colors.white54),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(19),
                 ),
@@ -119,18 +141,26 @@ class _AddProyectState extends State<AddProyect> {
 
             CustomDatepicker(onDateSelected: _onDateSelected),
 
-            Text('Categoria', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              'Categoria',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
 
             SizedBox(height: 8),
 
             DropdownButtonFormField<String>(
               borderRadius: BorderRadius.circular(19),
               value: _selectedCategory,
+              dropdownColor: const Color(0xFF222121),
+              style: TextStyle(color: Colors.white),
               items:
                   _categories.map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value),
+                      child: Text(value, style: TextStyle(color: Colors.white)),
                     );
                   }).toList(),
               validator: (value) {
@@ -152,13 +182,27 @@ class _AddProyectState extends State<AddProyect> {
             ),
             SizedBox(height: 46),
 
+            Text(
+              'Relevancia',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(height: 8),
+
             DropdownButtonFormField<String>(
               value: _selectedrelevancia,
+              dropdownColor: const Color(0xFF222121),
+              style: TextStyle(color: Colors.white),
               items:
                   _relevancia.entries.map((entry) {
                     return DropdownMenuItem<String>(
                       value: entry.key.toString(), // "1", "2", "3"
-                      child: Text(entry.value), // "baja", "Media", "Alta"
+                      child: Text(
+                        entry.value,
+                        style: TextStyle(color: Colors.white),
+                      ), // "baja", "Media", "Alta"
                     );
                   }).toList(),
               onChanged: (newValue) {

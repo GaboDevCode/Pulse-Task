@@ -6,6 +6,8 @@ class TaskProvider extends ChangeNotifier {
   List<Tarea> _tareas = [];
   final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
 
+  TaskProvider(database);
+
   List<Tarea> get tareas => _tareas;
 
   Future<void> loadTareasPorProyecto(int proyectoId) async {

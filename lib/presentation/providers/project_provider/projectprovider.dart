@@ -6,6 +6,8 @@ class Projectprovider extends ChangeNotifier {
   List<Proyecto> _proyectos = [];
   final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
 
+  Projectprovider(Type database);
+
   List<Proyecto> get proyectos => _proyectos;
 
   Future<void> loadProyectos() async {

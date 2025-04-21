@@ -27,6 +27,8 @@ class _ProyectsViewState extends State<ProyectsView> {
     final proyectos = context.watch<Projectprovider>().proyectos;
 
     return Scaffold(
+      backgroundColor: const Color(0xFF222121),
+
       body:
           proyectos.isEmpty
               ? Center(child: Text('No hay proyectos creados'))
@@ -48,13 +50,43 @@ class _ProyectsViewState extends State<ProyectsView> {
                       trailing: IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: () async {
-                          await Provider.of<Projectprovider>(
-                            context,
-                            listen: false,
-                          ).deleteProyecto(proyecto.id!);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text(
+                                  'Seguro que desea eliminar el proyecto?',
+                                ),
+                                content: Text(
+                                  'Esta acción no se puede deshacer.',
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Cancelar'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      // Aquí puedes agregar la lógica para eliminar el proyecto
+                                      Provider.of<Projectprovider>(
+                                        context,
+                                        listen: false,
+                                      ).deleteProyecto(proyecto.id!);
+                                      // Cerrar el diálogo
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Eliminar'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                       ),
                       onTap: () {
+                        // Navegar a la vista de detalle del proyecto
                         context.goNamed('details_proyects', extra: proyecto);
                       },
                     ),
@@ -62,10 +94,12 @@ class _ProyectsViewState extends State<ProyectsView> {
                 },
               ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        shape: const CircleBorder(),
+        elevation: 40.0,
         onPressed: () {
           context.goNamed('proyects');
         },
+        child: const Icon(Icons.add),
       ),
     );
   }

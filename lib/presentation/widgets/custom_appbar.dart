@@ -38,11 +38,18 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
               children: [
                 Text(
                   greeting,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
                 Text(
                   name,
-                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: const Color(0xFF9E9B9B),
+                  ),
                 ),
               ],
             ),

@@ -6,9 +6,18 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF222121),
       appBar: AppBar(
+        backgroundColor: const Color(0xFF222121),
         centerTitle: true,
-        title: Text('Perfil', textAlign: TextAlign.center),
+        title: Text(
+          'Perfil',
+          textAlign: TextAlign.center,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyLarge?.copyWith(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Center(
         child: Column(
@@ -49,7 +58,6 @@ class ProfileOptions extends StatelessWidget {
                   SizedBox(width: 12),
                   Text('Cuenta', style: TextStyle(fontSize: 18)),
                   Spacer(),
-              
                 ],
               ),
             ),
@@ -67,7 +75,6 @@ class ProfileOptions extends StatelessWidget {
                   SizedBox(width: 12),
                   Text('seguridad', style: TextStyle(fontSize: 18)),
                   Spacer(),
-                 
                 ],
               ),
             ),
