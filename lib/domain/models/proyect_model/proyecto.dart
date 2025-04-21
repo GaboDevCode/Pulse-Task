@@ -1,8 +1,10 @@
+// Modelo de Proyecto
 class Proyecto {
   int? id;
   final String nombre;
   final String descripcion;
   final String categoria;
+  final int? relevancia;
   final DateTime fechaInicio;
   final DateTime? fechaFin;
 
@@ -12,6 +14,7 @@ class Proyecto {
     required this.nombre,
     required this.descripcion,
     required this.categoria,
+    this.relevancia = 1,
     required this.fechaInicio,
     this.fechaFin,
   });
@@ -22,6 +25,7 @@ class Proyecto {
       'nombre': nombre,
       'descripcion': descripcion,
       'categoria': categoria,
+      'relevancia': relevancia,
       'fechaInicio': fechaInicio.toIso8601String(),
       'fechaFin': fechaFin?.toIso8601String(),
     };
@@ -33,6 +37,7 @@ class Proyecto {
       nombre: map['nombre'],
       descripcion: map['descripcion'],
       categoria: map['categoria'],
+      relevancia: map['relevancia'],
       fechaInicio: DateTime.parse(map['fechaInicio']),
       fechaFin:
           map['fechaFin'] != null ? DateTime.parse(map['fechaFin']) : null,

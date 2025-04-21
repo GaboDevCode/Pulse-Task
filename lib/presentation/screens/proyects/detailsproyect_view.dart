@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pulse_task/domain/models/proyect_model/proyecto.dart';
+import 'package:pulse_task/presentation/providers/task_provider/taskprojectprovider.dart';
+import 'package:pulse_task/presentation/screens/task_project/taskproject_view.dart';
 
 class DetailsproyectView extends StatelessWidget {
   final Proyecto proyecto;
@@ -75,7 +78,7 @@ class DetailsproyectView extends StatelessWidget {
                 ),
               ),
             ),
-            // Lista de tareas recientes
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -83,20 +86,18 @@ class DetailsproyectView extends StatelessWidget {
                   'Tarea',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
                 ),
-                IconButton(onPressed: () {}, icon: Icon(Icons.add_box)),
+                IconButton(
+                  onPressed: () {
+                    mostrarFormularioCrearTarea(context, proyecto.id!);
+                  },
+                  icon: Icon(Icons.add_box),
+                ),
               ],
             ),
             const SizedBox(height: 16),
-            Expanded(
-              child: ListView(
-                children: [
-                  _buildTaskItem('Content updates', '10 days ago'),
-                  _buildTaskItem('App QA', '9 days ago'),
-                  _buildTaskItem('Marketing strategy', '9 days ago'),
-                  _buildTaskItem('Deployment flow', '9 days ago'),
-                ],
-              ),
-            ),
+
+            // Lista de tareas recientes
+            TaskListWidget(proyectoId: proyecto.id!),
           ],
         ),
       ),
@@ -173,5 +174,83 @@ class DetailsproyectView extends StatelessWidget {
 
   String _formatDate(DateTime date) {
     return '${date.day}/${date.month}/${date.year}';
+  }
+}
+
+class TaskListWidget extends StatefulWidget {
+  final int proyectoId;
+
+  const TaskListWidget({super.key, required this.proyectoId});
+
+  @override
+  State<TaskListWidget> createState() => _TaskListWidgetState();
+}
+
+class _TaskListWidgetState extends State<TaskListWidget> {
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTareas();
+  }
+
+  Future<void> _loadTareas() async {
+    await Provider.of<TaskProvider>(
+      context,
+      listen: false,
+    ).loadTareasPorProyecto(widget.proyectoId);
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return SizedBox(
+      height: 400, // altura que quieras para la lista
+      child: Consumer<TaskProvider>(
+        builder: (context, taskprovider, child) {
+          final tareas =
+              taskprovider.tareas
+                  .where((t) => t.proyectoId == widget.proyectoId)
+                  .toList();
+
+          if (tareas.isEmpty) {
+            return const Center(child: Text("No hay tareas aún"));
+          }
+
+          return ListView.builder(
+            itemCount: tareas.length,
+            itemBuilder: (context, index) {
+              final tarea = tareas[index];
+              return Card(
+                elevation: 6,
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                child: ListTile(
+                  title: Text(tarea.nombre),
+                  subtitle: Text(
+                    _formatDate(tarea.fechaVencimiento ?? DateTime.now()),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  // Suponiendo que ya tenés este método definido donde usás este widget:
+  Widget _buildTaskItem(String nombre, String fecha) {
+    return ListTile(title: Text(nombre), subtitle: Text(fecha));
+  }
+
+  String _formatDate(DateTime date) {
+    return "${date.day}/${date.month}/${date.year}";
   }
 }

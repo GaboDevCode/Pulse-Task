@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:pulse_task/configuration/router/routes.dart';
 import 'package:pulse_task/configuration/theme/app_theme.dart';
 import 'package:pulse_task/presentation/providers/project_provider/projectprovider.dart';
+import 'package:pulse_task/presentation/providers/task_provider/taskprojectprovider.dart';
 import 'package:pulse_task/presentation/providers/theme_provider/ThemeProvider.dart';
 
 void main() => runApp(
@@ -10,6 +11,7 @@ void main() => runApp(
     providers: [
       ChangeNotifierProvider(create: (_) => Projectprovider()),
       ChangeNotifierProvider(create: (_) => Themeprovider()),
+      ChangeNotifierProvider(create: (_) => TaskProvider()),
     ],
     child: MyApp(),
   ),

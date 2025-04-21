@@ -30,6 +30,7 @@ class _AddProyectState extends State<AddProyect> {
   String _proyect = '';
   String _description = '';
   String _selectedCategory = 'Personal';
+  String _selectedrelevancia = '1'; // Cambiar a la clave como string
   DateTime _fechaInicio = DateTime.now();
   DateTime? _fechaFin;
 
@@ -43,6 +44,8 @@ class _AddProyectState extends State<AddProyect> {
     'Dinero',
     'Vario',
   ];
+
+  final Map<int, String> _relevancia = {1: 'baja', 2: 'Media', 3: 'Alta'};
 
   void _onDateSelected(DateTime startDate, DateTime? endDate) {
     setState(() {
@@ -117,6 +120,7 @@ class _AddProyectState extends State<AddProyect> {
             CustomDatepicker(onDateSelected: _onDateSelected),
 
             Text('Categoria', style: TextStyle(fontWeight: FontWeight.bold)),
+
             SizedBox(height: 8),
 
             DropdownButtonFormField<String>(
@@ -138,6 +142,28 @@ class _AddProyectState extends State<AddProyect> {
               onChanged: (newValue) {
                 setState(() {
                   _selectedCategory = newValue!;
+                });
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(19),
+                ),
+              ),
+            ),
+            SizedBox(height: 46),
+
+            DropdownButtonFormField<String>(
+              value: _selectedrelevancia,
+              items:
+                  _relevancia.entries.map((entry) {
+                    return DropdownMenuItem<String>(
+                      value: entry.key.toString(), // "1", "2", "3"
+                      child: Text(entry.value), // "baja", "Media", "Alta"
+                    );
+                  }).toList(),
+              onChanged: (newValue) {
+                setState(() {
+                  _selectedrelevancia = newValue!;
                 });
               },
               decoration: InputDecoration(
