@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:pulse_task/configuration/theme/app_theme.dart';
+import 'package:pulse_task/presentation/providers/theme_provider/ThemeProvider.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String greeting;
@@ -44,10 +47,42 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
               ],
             ),
             Spacer(),
-            IconButton(icon: Icon(Icons.color_lens), onPressed: () {}),
+            ColorThemeDropdown(), // Cambiamos el IconButton por nuestro widget personalizado
           ],
         ),
       ),
+    );
+  }
+}
+
+class ColorThemeDropdown extends StatelessWidget {
+  const ColorThemeDropdown({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final themeProvider = Provider.of<Themeprovider>(context, listen: false);
+
+    return PopupMenuButton<int>(
+      icon: Icon(Icons.color_lens, color: Theme.of(context).primaryColor),
+      itemBuilder: (BuildContext context) {
+        return List.generate(AppTheme.colors.length, (index) {
+          return PopupMenuItem<int>(
+            value: index,
+            child: Row(
+              children: [
+                Icon(Icons.color_lens, color: AppTheme.colors[index]),
+                SizedBox(width: 12),
+                Text(AppTheme.getColorName(AppTheme.colors[index])),
+              ],
+            ),
+          );
+        });
+      },
+      onSelected: (int index) {
+        themeProvider.setColorIndex(index);
+      },
+      offset: Offset(0, 50), // Ajusta la posición del menú
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     );
   }
 }

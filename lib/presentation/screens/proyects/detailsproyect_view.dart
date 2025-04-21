@@ -5,8 +5,10 @@ class DetailsproyectView extends StatelessWidget {
   final Proyecto proyecto;
 
   const DetailsproyectView({super.key, required this.proyecto});
+
   @override
   Widget build(BuildContext context) {
+    //   final colorTheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(title: Text(proyecto.nombre)),
       body: Padding(
@@ -17,7 +19,6 @@ class DetailsproyectView extends StatelessWidget {
             // Card con la información del proyecto
             Card(
               elevation: 10,
-              color: Colors.blueGrey,
               margin: const EdgeInsets.only(bottom: 20),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.0),
@@ -35,15 +36,15 @@ class DetailsproyectView extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildInfoLabel('Descripción:'),
+                            _buildInfoLabel('Descripción:', Colors.black),
                             const SizedBox(height: 16),
-                            _buildInfoLabel('Categoría:'),
+                            _buildInfoLabel('Categoría:', Colors.black),
                             const SizedBox(height: 16),
-                            _buildInfoLabel('Fecha de inicio:'),
+                            _buildInfoLabel('Fecha de inicio:', Colors.black),
                             if (proyecto.fechaFin != null)
                               const SizedBox(height: 16),
                             if (proyecto.fechaFin != null)
-                              _buildInfoLabel('Fecha fin:'),
+                              _buildInfoLabel('Fecha fin:', Colors.black),
                           ],
                         ),
                         const SizedBox(width: 16),
@@ -103,7 +104,7 @@ class DetailsproyectView extends StatelessWidget {
   }
 
   // Métodos auxiliares para los estilos
-  Widget _buildInfoLabel(String text) {
+  Widget _buildInfoLabel(String text, Color black) {
     return SizedBox(
       width: 100, // Ancho fijo para alinear las etiquetas
       child: Text(
@@ -111,7 +112,7 @@ class DetailsproyectView extends StatelessWidget {
         style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16,
-          color: Colors.white70,
+          color: Color.fromARGB(179, 0, 0, 0),
         ),
       ),
     );
@@ -120,22 +121,11 @@ class DetailsproyectView extends StatelessWidget {
   Widget _buildInfoValue(String text) {
     return Text(
       text,
-      style: const TextStyle(fontSize: 16, color: Colors.white),
+      style: const TextStyle(
+        fontSize: 16,
+        color: Color.fromARGB(255, 66, 60, 60),
+      ),
       softWrap: true,
-    );
-  }
-
-  Widget _buildInfoRow(String label, String value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-        const SizedBox(height: 4),
-        Text(value, style: const TextStyle(fontSize: 16)),
-      ],
     );
   }
 
@@ -161,13 +151,19 @@ class DetailsproyectView extends StatelessWidget {
                 const SizedBox(height: 4),
                 const Text(
                   '# 1000ms',
-                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 66, 60, 60),
+                    fontSize: 14,
+                  ),
                 ),
               ],
             ),
             Text(
               timeAgo,
-              style: const TextStyle(color: Colors.grey, fontSize: 14),
+              style: const TextStyle(
+                color: Color.fromARGB(255, 66, 60, 60),
+                fontSize: 14,
+              ),
             ),
           ],
         ),

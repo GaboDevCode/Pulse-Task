@@ -37,8 +37,14 @@ class _ProyectsViewState extends State<ProyectsView> {
                   return Card(
                     margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: ListTile(
-                      title: Text(proyecto.nombre),
-                      subtitle: Text(proyecto.categoria),
+                      title: Text(
+                        proyecto.nombre,
+                        selectionColor: const Color.fromARGB(179, 0, 0, 0),
+                      ),
+                      subtitle: Text(
+                        proyecto.categoria,
+                        selectionColor: const Color.fromARGB(255, 66, 60, 60),
+                      ),
                       trailing: IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: () async {
