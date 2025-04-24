@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 class CustomDatepicker extends StatefulWidget {
   final Function(DateTime startDate, DateTime? endDate) onDateSelected;
 
-  const CustomDatepicker({super.key, required this.onDateSelected});
+  const CustomDatepicker({
+    super.key,
+    required this.onDateSelected,
+    required DateTime initialStartDate,
+    DateTime? initialEndDate,
+  });
 
   @override
   State<CustomDatepicker> createState() => _CustomDatepickerState();

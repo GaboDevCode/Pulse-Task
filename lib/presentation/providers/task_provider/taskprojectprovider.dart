@@ -25,14 +25,18 @@ class TaskProvider extends ChangeNotifier {
     await loadTareasPorProyecto(tarea.proyectoId);
   }
 
-  Future<void> deleteTarea(int id, int proyectoId) async {
-    await _databaseHelper.deleteTask(id);
-    await loadTareasPorProyecto(proyectoId);
+  Future<void> deleteTarea(Tarea tarea) async {
+    await _databaseHelper.deleteTask(tarea);
+    await loadTareasPorProyecto(tarea.proyectoId);
   }
 
   Future<void> marcarComoNotificada(int tareaId) async {
     await _databaseHelper.marcarComoNotificada(tareaId);
   }
+
+  // Future<void> tareaCompletada(Tarea tarea, int completado) async {
+  //   await _databaseHelper.tareaCompletada(tarea, tarea.completado);
+  // }
 
   /// Filtra las tareas por vencer dentro de los próximos [dias]
   Future<List<Tarea>> getTareasPorVencerEn(int dias) async {

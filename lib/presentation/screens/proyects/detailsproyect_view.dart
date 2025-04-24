@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pulse_task/domain/models/proyect_model/proyecto.dart';
+import 'package:pulse_task/domain/models/task_model/tarea.dart';
 import 'package:pulse_task/presentation/providers/task_provider/taskprojectprovider.dart';
+import 'package:pulse_task/presentation/screens/proyects/editproyecto_view.dart';
 import 'package:pulse_task/presentation/screens/task_project/taskproject_view.dart';
+import 'package:pulse_task/presentation/widgets/tareasformcard.dart';
 
 class DetailsproyectView extends StatelessWidget {
   final Proyecto proyecto;
@@ -80,6 +83,21 @@ class DetailsproyectView extends StatelessWidget {
                                 ),
                             ],
                           ),
+                        ),
+                        // Icono en la parte superior derecha
+                        IconButton(
+                          onPressed: () {
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder:
+                            //         (context) =>
+                            //             EditProyectoView(proyecto: proyecto),
+                            //   ),
+                            // );
+                          },
+                          icon: const Icon(Icons.pending_actions_outlined),
+                          color: const Color.fromARGB(255, 31, 31, 31),
                         ),
                       ],
                     ),
@@ -202,7 +220,6 @@ class TaskListWidget extends StatefulWidget {
 
 class _TaskListWidgetState extends State<TaskListWidget> {
   bool _isLoading = true;
-
   @override
   void initState() {
     super.initState();
@@ -217,6 +234,29 @@ class _TaskListWidgetState extends State<TaskListWidget> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void mostrarFormularioEditarTarea(BuildContext context, Tarea tarea) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return TareaFormCard(
+          proyectoId: tarea.proyectoId,
+          tareaExistente: tarea,
+          onGuardar: (tareaEditada) async {
+            await Provider.of<TaskProvider>(
+              context,
+              listen: false,
+            ).updateTarea(tareaEditada);
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -248,10 +288,102 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                     vertical: 8,
                     horizontal: 4,
                   ),
-                  child: ListTile(
-                    title: Text(tarea.nombre),
-                    subtitle: Text(
-                      _formatDate(tarea.fechaVencimiento ?? DateTime.now()),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        // Contenido principal
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(tarea.nombre),
+                              Text(
+                                _formatDate(
+                                  tarea.fechaVencimiento ?? DateTime.now(),
+                                ),
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Iconos
+                        Row(
+                          mainAxisSize: MainAxisSize.min, // Importante
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                        tarea.nombre,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      content: Text(tarea.descripcion),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Cerrar'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              icon: Icon(Icons.remove_red_eye_sharp),
+                            ),
+
+                            IconButton(
+                              onPressed: () {
+                                mostrarFormularioEditarTarea(context, tarea);
+                              },
+                              icon: Icon(Icons.wallet),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                        'Seguro que desea eliminar esta tarea?',
+                                      ),
+                                      content: Text(
+                                        'Esta acción no se puede deshacer.',
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Cancelar'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            // Aquí puedes agregar la lógica para eliminar el proyecto
+                                            Provider.of<TaskProvider>(
+                                              context,
+                                              listen: false,
+                                            ).deleteTarea(tarea);
+                                            // Cerrar el diálogo
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Eliminar'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              icon: Icon(Icons.delete),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 );

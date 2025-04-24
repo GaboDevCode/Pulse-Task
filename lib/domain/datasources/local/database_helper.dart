@@ -106,9 +106,9 @@ class DatabaseHelper {
     );
   }
 
-  Future<int> deleteTask(int id) async {
+  Future<int> deleteTask(Tarea tarea) async {
     final db = await instance.database;
-    return db.delete('tareas', where: 'id = ?', whereArgs: [id]);
+    return db.delete('tareas', where: 'id = ?', whereArgs: [tarea.id]);
   }
 
   // Obtener todas las tareas por proyecto

@@ -18,7 +18,7 @@ void main() async {
   ]);
 
   // 2. Inicializar la base de datos ANTES de runApp
-  final database = DatabaseHelper; // <- Tu función de inicialización
+  final database = DatabaseHelper;
 
   runApp(
     MultiProvider(

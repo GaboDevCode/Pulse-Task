@@ -24,7 +24,7 @@ final appRouter = GoRouter(
         GoRoute(
           path: 'proyects',
           name: 'proyects',
-          builder: (context, state) => const CreateproyectView(),
+          builder: (context, state) => const CreateProyectoView(),
         ),
         GoRoute(
           path: 'details_proyects',
