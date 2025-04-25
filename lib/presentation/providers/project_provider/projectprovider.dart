@@ -29,4 +29,8 @@ class Projectprovider extends ChangeNotifier {
     await _databaseHelper.deleteProyecto(id);
     await loadProyectos();
   }
+
+  List<Proyecto> get proyectoPrioridadAlta {
+    return _proyectos.where((p) => p.relevancia == 3).toList();
+  }
 }

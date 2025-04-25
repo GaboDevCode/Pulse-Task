@@ -14,7 +14,7 @@ class Proyecto {
     required this.nombre,
     required this.descripcion,
     required this.categoria,
-    this.relevancia = 1,
+    this.relevancia,
     required this.fechaInicio,
     this.fechaFin,
   });

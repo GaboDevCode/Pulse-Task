@@ -22,7 +22,11 @@ class TaskProvider extends ChangeNotifier {
 
   Future<void> updateTarea(Tarea tarea) async {
     await _databaseHelper.updateTask(tarea);
-    await loadTareasPorProyecto(tarea.proyectoId);
+    final index = _tareas.indexWhere((t) => t.id == tarea.id);
+    if (index != -1) {
+      _tareas[index] = tarea;
+      notifyListeners();
+    }
   }
 
   Future<void> deleteTarea(Tarea tarea) async {

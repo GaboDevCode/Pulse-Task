@@ -244,6 +244,9 @@ class _AddProyectState extends State<AddProyect> {
                               categoria: _selectedCategory,
                               fechaInicio: _fechaInicio,
                               fechaFin: _fechaFin,
+                              relevancia: int.parse(
+                                _selectedrelevancia,
+                              ), // ¡Asegúrate de que _selectedrelevancia sea "3"!
                             );
 
                             try {
