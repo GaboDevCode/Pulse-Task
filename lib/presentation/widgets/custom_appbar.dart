@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:pulse_task/configuration/theme/app_theme.dart';
+import 'package:pulse_task/presentation/providers/profile_provider/profile_provider.dart';
 import 'package:pulse_task/presentation/providers/theme_provider/ThemeProvider.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
@@ -11,10 +12,12 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppbar({super.key, required this.greeting, required this.name});
 
   @override
-  Size get preferredSize => Size.fromHeight(80.0);
+  Size get preferredSize => const Size.fromHeight(80.0);
 
   @override
   Widget build(BuildContext context) {
+    final profileImage = context.watch<ProfileProvider>().profileImage;
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 9.0),
@@ -23,22 +26,25 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
             IconButton(
               icon: CircleAvatar(
                 radius: 27,
-                backgroundImage: NetworkImage(
-                  'https://avatars.githubusercontent.com/u/201642198?s=96&v=4',
-                ),
+                backgroundImage:
+                    profileImage != null
+                        ? FileImage(profileImage) as ImageProvider
+                        : const NetworkImage(
+                          'https://avatars.githubusercontent.com/u/201642198?s=96&v=4',
+                        ),
               ),
               onPressed: () {
                 context.goNamed('profile');
               },
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   greeting,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -46,15 +52,15 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 Text(
                   name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
-                    color: const Color(0xFF9E9B9B),
+                    color: Color(0xFF9E9B9B),
                   ),
                 ),
               ],
             ),
-            Spacer(),
-            ColorThemeDropdown(), // Cambiamos el IconButton por nuestro widget personalizado
+            const Spacer(),
+            ColorThemeDropdown(),
           ],
         ),
       ),

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:pulse_task/configuration/router/routes.dart';
 import 'package:pulse_task/configuration/theme/app_theme.dart';
 import 'package:pulse_task/domain/datasources/local/database_helper.dart';
+import 'package:pulse_task/presentation/providers/profile_provider/profile_provider.dart';
 import 'package:pulse_task/presentation/providers/project_provider/projectprovider.dart';
 import 'package:pulse_task/presentation/providers/task_provider/taskprojectprovider.dart';
 import 'package:pulse_task/presentation/providers/theme_provider/ThemeProvider.dart';
@@ -29,6 +30,7 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => TaskProvider(database), // Ejemplo: Inyectar BD
         ),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
       ],
       child: const MyApp(),
     ),
@@ -40,10 +42,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<Themeprovider>(context);
+    final themeProvider = context.watch<Themeprovider>().selectedColorIndex;
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.getTheme(themeProvider.selectedColorIndex),
+      theme: AppTheme.getTheme(themeProvider),
       routerConfig: appRouter,
     );
   }
