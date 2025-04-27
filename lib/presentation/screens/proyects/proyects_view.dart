@@ -163,7 +163,7 @@ class _ProyectsViewState extends State<ProyectsView> {
         shape: const CircleBorder(),
         elevation: 40.0,
         onPressed: () {
-          context.goNamed('proyects');
+          context.pushNamed('proyect_form'); // O:
         },
         child: const Icon(Icons.add),
       ),

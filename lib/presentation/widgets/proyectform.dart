@@ -22,16 +22,25 @@ class Proyectform extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFF222121),
         centerTitle: true,
-        title: Text('Crear proyecto', style: TextStyle(color: Colors.white)),
+        title: Text(
+          isEditing ? 'Editar proyecto' : 'Crear proyecto',
+          style: const TextStyle(color: Colors.white),
+        ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: AddProyect(),
+      body: AddProyect(
+        proyectoExistente: proyectoExistente,
+        isEditing: isEditing,
+      ),
     );
   }
 }
 
 class AddProyect extends StatefulWidget {
-  const AddProyect({super.key});
+  final Proyecto? proyectoExistente;
+  final bool isEditing;
+
+  const AddProyect({super.key, this.proyectoExistente, this.isEditing = false});
 
   @override
   State<AddProyect> createState() => _AddProyectState();
@@ -39,12 +48,12 @@ class AddProyect extends StatefulWidget {
 
 class _AddProyectState extends State<AddProyect> {
   final _formKey = GlobalKey<FormState>();
-  bool _isLoading = false; // Añade esta variable
-  String _proyect = '';
-  String _description = '';
-  String _selectedCategory = 'Personal';
-  String _selectedrelevancia = '1'; // Cambiar a la clave como string
-  DateTime _fechaInicio = DateTime.now();
+  bool _isLoading = false;
+  late String _proyect;
+  late String _description;
+  late String _selectedCategory;
+  late String _selectedrelevancia;
+  late DateTime _fechaInicio;
   DateTime? _fechaFin;
 
   final List<String> _categories = [
@@ -58,7 +67,20 @@ class _AddProyectState extends State<AddProyect> {
     'Vario',
   ];
 
-  final Map<int, String> _relevancia = {1: 'baja', 2: 'Media', 3: 'Alta'};
+  final Map<int, String> _relevancia = {1: 'Baja', 2: 'Media', 3: 'Alta'};
+
+  @override
+  void initState() {
+    super.initState();
+    // Inicializar con datos del proyecto existente o valores por defecto
+    _proyect = widget.proyectoExistente?.nombre ?? '';
+    _description = widget.proyectoExistente?.descripcion ?? '';
+    _selectedCategory = widget.proyectoExistente?.categoria ?? 'Personal';
+    _selectedrelevancia =
+        widget.proyectoExistente?.relevancia.toString() ?? '1';
+    _fechaInicio = widget.proyectoExistente?.fechaInicio ?? DateTime.now();
+    _fechaFin = widget.proyectoExistente?.fechaFin;
+  }
 
   void _onDateSelected(DateTime startDate, DateTime? endDate) {
     setState(() {
@@ -77,24 +99,25 @@ class _AddProyectState extends State<AddProyect> {
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            // Campo: Nombre del proyecto
+            const Text(
               'Nombre',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextFormField(
               initialValue: _proyect,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                hintText: 'Objetivo especifico del proyecto',
-                hintStyle: TextStyle(color: Colors.white54),
+                hintText: 'Objetivo específico del proyecto',
+                hintStyle: const TextStyle(color: Colors.white54),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(19),
                 ),
@@ -105,29 +128,25 @@ class _AddProyectState extends State<AddProyect> {
                 }
                 return null;
               },
-              onChanged: (value) {
-                setState(() {
-                  _proyect = value;
-                });
-              },
+              onChanged: (value) => _proyect = value,
             ),
+            const SizedBox(height: 16),
 
-            SizedBox(height: 16),
-
-            Text(
+            // Campo: Descripción
+            const Text(
               'Detalles',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextFormField(
               initialValue: _description,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                hintText: 'Por que es importante este objetivo?',
-                hintStyle: TextStyle(color: Colors.white54),
+                hintText: '¿Por qué es importante este objetivo?',
+                hintStyle: const TextStyle(color: Colors.white54),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(19),
                 ),
@@ -138,136 +157,120 @@ class _AddProyectState extends State<AddProyect> {
                 }
                 return null;
               },
-              onChanged: (value) {
-                setState(() {
-                  _description = value;
-                });
-              },
+              onChanged: (value) => _description = value,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
+            // Selector de fechas
             CustomDatepicker(
               onDateSelected: _onDateSelected,
-              initialStartDate: DateTime.now(),
+              initialStartDate: _fechaInicio,
+              initialEndDate: _fechaFin,
             ),
+            const SizedBox(height: 16),
 
-            Text(
-              'Categoria',
+            // Campo: Categoría
+            const Text(
+              'Categoría',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-
-            SizedBox(height: 8),
-
+            const SizedBox(height: 8),
             DropdownButtonFormField<String>(
-              borderRadius: BorderRadius.circular(19),
               value: _selectedCategory,
               dropdownColor: const Color(0xFF222121),
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
               items:
-                  _categories.map((String value) {
+                  _categories.map((category) {
                     return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value, style: TextStyle(color: Colors.white)),
+                      value: category,
+                      child: Text(category),
                     );
                   }).toList(),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Ingresa al menos una categoria';
-                }
-                return null;
-              },
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedCategory = newValue!;
-                });
-              },
+              onChanged: (value) => setState(() => _selectedCategory = value!),
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(19),
                 ),
               ),
             ),
-            SizedBox(height: 46),
+            const SizedBox(height: 16),
 
-            Text(
+            // Campo: Relevancia
+            const Text(
               'Relevancia',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 8),
-
+            const SizedBox(height: 8),
             DropdownButtonFormField<String>(
               value: _selectedrelevancia,
               dropdownColor: const Color(0xFF222121),
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
               items:
                   _relevancia.entries.map((entry) {
                     return DropdownMenuItem<String>(
-                      value: entry.key.toString(), // "1", "2", "3"
-                      child: Text(
-                        entry.value,
-                        style: TextStyle(color: Colors.white),
-                      ), // "baja", "Media", "Alta"
+                      value: entry.key.toString(),
+                      child: Text(entry.value),
                     );
                   }).toList(),
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedrelevancia = newValue!;
-                });
-              },
+              onChanged:
+                  (value) => setState(() => _selectedrelevancia = value!),
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(19),
                 ),
               ),
             ),
-            SizedBox(height: 46),
+            const SizedBox(height: 32),
 
+            // Botón de guardar
             Center(
               child: ElevatedButton(
                 onPressed:
                     _isLoading
                         ? null
                         : () async {
-                          // Deshabilita el botón durante carga
                           if (_formKey.currentState!.validate()) {
                             setState(() => _isLoading = true);
 
-                            final nuevoProyecto = Proyecto(
+                            final proyecto = Proyecto(
+                              id: widget.proyectoExistente?.id,
                               nombre: _proyect,
                               descripcion: _description,
                               categoria: _selectedCategory,
                               fechaInicio: _fechaInicio,
                               fechaFin: _fechaFin,
-                              relevancia: int.parse(
-                                _selectedrelevancia,
-                              ), // ¡Asegúrate de que _selectedrelevancia sea "3"!
+                              relevancia: int.parse(_selectedrelevancia),
                             );
 
                             try {
-                              await proyectoProvider.addProyecto(nuevoProyecto);
+                              if (widget.isEditing) {
+                                await proyectoProvider.updateProyecto(proyecto);
+                              } else {
+                                await proyectoProvider.addProyecto(proyecto);
+                              }
 
                               if (!mounted) return;
-
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                    '✅ Proyecto creado exitosamente',
+                                    widget.isEditing
+                                        ? '✅ Proyecto actualizado'
+                                        : '✅ Proyecto creado',
                                   ),
                                 ),
                               );
 
-                              // Espera un momento para que el usuario vea el mensaje
-                              await Future.delayed(Duration(milliseconds: 500));
-
+                              await Future.delayed(
+                                const Duration(milliseconds: 500),
+                              );
                               if (mounted) context.goNamed('home');
                             } catch (e) {
-                              if (!mounted) return;
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text('❌ Error: ${e.toString()}'),
@@ -279,9 +282,14 @@ class _AddProyectState extends State<AddProyect> {
                           }
                         },
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 16,
+                  ),
                 ),
-                child: Text('Crear nuevo proyecto'),
+                child: Text(
+                  widget.isEditing ? 'Guardar cambios' : 'Crear nuevo proyecto',
+                ),
               ),
             ),
           ],

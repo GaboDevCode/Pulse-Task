@@ -46,4 +46,9 @@ class TaskProvider extends ChangeNotifier {
   Future<List<Tarea>> getTareasPorVencerEn(int dias) async {
     return await _databaseHelper.getTaskPorVencerEn(dias);
   }
+
+  void cargarTareas(List<Tarea> tareas) {
+    _tareas = tareas;
+    notifyListeners();
+  }
 }

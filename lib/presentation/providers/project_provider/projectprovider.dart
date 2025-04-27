@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pulse_task/domain/datasources/local/database_helper.dart';
 import 'package:pulse_task/domain/models/proyect_model/proyecto.dart';
+import 'package:pulse_task/domain/models/task_model/tarea.dart';
 
 class Projectprovider extends ChangeNotifier {
   List<Proyecto> _proyectos = [];
@@ -32,5 +33,15 @@ class Projectprovider extends ChangeNotifier {
 
   List<Proyecto> get proyectoPrioridadAlta {
     return _proyectos.where((p) => p.relevancia == 3).toList();
+  }
+
+  double calcularProgresoProyecto(int proyectoId, List<Tarea> tareas) {
+    final tareasProyecto =
+        tareas.where((t) => t.proyectoId == proyectoId).toList();
+    if (tareasProyecto.isEmpty) return 0.0;
+
+    final tareasCompletadas =
+        tareasProyecto.where((t) => t.estado == 'completado').length;
+    return tareasCompletadas / tareasProyecto.length;
   }
 }

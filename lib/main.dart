@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pulse_task/configuration/notifications/notification_service.dart';
 import 'package:pulse_task/configuration/router/routes.dart';
 import 'package:pulse_task/configuration/theme/app_theme.dart';
 import 'package:pulse_task/domain/datasources/local/database_helper.dart';
@@ -21,10 +22,13 @@ void main() async {
   // 2. Inicializar la base de datos ANTES de runApp
   final database = DatabaseHelper;
 
+  // 3. Inicializar las notificaciones ANTES de runApp
+  await NotificationService.initialize();
+
   runApp(
     MultiProvider(
       providers: [
-        // 3. Pasar la BD a los providers que lo necesiten (ej: TaskProvider)
+        // 4. Pasar la BD a los providers que lo necesiten (ej: TaskProvider)
         ChangeNotifierProvider(create: (_) => Projectprovider(database)),
         ChangeNotifierProvider(create: (_) => Themeprovider()),
         ChangeNotifierProvider(
