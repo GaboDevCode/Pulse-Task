@@ -8,21 +8,90 @@ import 'package:pulse_task/presentation/screens/task_project/%20tasklistwidget.d
 import 'package:pulse_task/presentation/screens/task_project/taskproject_view.dart';
 import 'package:pulse_task/configuration/notifications/notification_service.dart';
 
-class DetailsproyectView extends StatelessWidget {
+class DetailsproyectView extends StatefulWidget {
   final Proyecto proyecto;
 
   const DetailsproyectView({super.key, required this.proyecto});
 
   @override
+  State<DetailsproyectView> createState() => _DetailsproyectViewState();
+}
+
+class _DetailsproyectViewState extends State<DetailsproyectView> {
+  bool _dialogShown = false;
+  late TaskProvider _taskProv;
+
+  @override
+  void initState() {
+    super.initState();
+    // Esperamos al primer frame para poder usar context
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _taskProv = Provider.of<TaskProvider>(context, listen: false);
+      _taskProv.addListener(_checkCompletion);
+      // Comprobación inicial (por si ya estaba al 100%)
+      _checkCompletion();
+    });
+  }
+
+  @override
+  void dispose() {
+    _taskProv.removeListener(_checkCompletion);
+    super.dispose();
+  }
+
+  void _checkCompletion() {
+    final projProv = Provider.of<Projectprovider>(context, listen: false);
+    final progreso = projProv.calcularProgresoProyecto(
+      widget.proyecto.id!,
+      _taskProv.tareas,
+    );
+
+    if (progreso >= 1.0 &&
+        widget.proyecto.estado != 'completado' &&
+        !_dialogShown) {
+      _dialogShown = true;
+      showDialog(
+        context: context,
+        builder:
+            (_) => AlertDialog(
+              title: const Text('¡Proyecto completado!'),
+              content: Text(
+                '¿Marcar "${widget.proyecto.nombre}" como completado?',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('No'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    await Provider.of<Projectprovider>(
+                      context,
+                      listen: false,
+                    ).actualizarEstadoProyecto(
+                      widget.proyecto.id!,
+                      'completado',
+                    );
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Sí'),
+                ),
+              ],
+            ),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     //   final colorTheme = Theme.of(context).colorScheme;
-    _checkProjectStatus(context, proyecto);
+    _checkProjectStatus(context, widget.proyecto);
     return Scaffold(
       backgroundColor: const Color(0xFF222121),
 
       appBar: AppBar(
         title: Text(
-          proyecto.nombre,
+          widget.proyecto.nombre,
           style: TextStyle(color: const Color(0xFFFFFFFF)),
         ),
         backgroundColor: const Color(0xFF222121),
@@ -58,9 +127,9 @@ class DetailsproyectView extends StatelessWidget {
                             _buildInfoLabel('Categoría:', Colors.black),
                             const SizedBox(height: 16),
                             _buildInfoLabel('Fecha de inicio:', Colors.black),
-                            if (proyecto.fechaFin != null)
+                            if (widget.proyecto.fechaFin != null)
                               const SizedBox(height: 16),
-                            if (proyecto.fechaFin != null)
+                            if (widget.proyecto.fechaFin != null)
                               _buildInfoLabel('Fecha fin:', Colors.black),
                           ],
                         ),
@@ -70,18 +139,18 @@ class DetailsproyectView extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildInfoValue(proyecto.descripcion),
+                              _buildInfoValue(widget.proyecto.descripcion),
                               const SizedBox(height: 16),
-                              _buildInfoValue(proyecto.categoria),
+                              _buildInfoValue(widget.proyecto.categoria),
                               const SizedBox(height: 16),
                               _buildInfoValue(
-                                _formatDate(proyecto.fechaInicio),
+                                _formatDate(widget.proyecto.fechaInicio),
                               ),
-                              if (proyecto.fechaFin != null)
+                              if (widget.proyecto.fechaFin != null)
                                 const SizedBox(height: 16),
-                              if (proyecto.fechaFin != null)
+                              if (widget.proyecto.fechaFin != null)
                                 _buildInfoValue(
-                                  _formatDate(proyecto.fechaFin!),
+                                  _formatDate(widget.proyecto.fechaFin!),
                                 ),
                             ],
                           ),
@@ -95,7 +164,7 @@ class DetailsproyectView extends StatelessWidget {
                               onPressed: () {
                                 context.pushNamed(
                                   'proyect_form',
-                                  extra: proyecto, // Proyecto a editar
+                                  extra: widget.proyecto, // Proyecto a editar
                                 );
                               },
                               icon: const Icon(Icons.edit),
@@ -111,7 +180,7 @@ class DetailsproyectView extends StatelessWidget {
                               ) {
                                 final progreso = projectProvider
                                     .calcularProgresoProyecto(
-                                      proyecto.id!,
+                                      widget.proyecto.id!,
                                       taskProvider.tareas,
                                     );
                                 return Column(
@@ -157,7 +226,7 @@ class DetailsproyectView extends StatelessWidget {
 
                 IconButton(
                   onPressed: () {
-                    mostrarFormularioCrearTarea(context, proyecto.id!);
+                    mostrarFormularioCrearTarea(context, widget.proyecto.id!);
                   },
                   icon: Icon(Icons.add_box),
                 ),
@@ -166,7 +235,7 @@ class DetailsproyectView extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Lista de tareas recientes
-            TaskListWidget(proyectoId: proyecto.id!),
+            TaskListWidget(proyectoId: widget.proyecto.id!),
           ],
         ),
       ),
@@ -220,7 +289,7 @@ class DetailsproyectView extends StatelessWidget {
             proyecto.fechaFin!.isBefore(
               currentDate.add(const Duration(days: 3)),
             )) ||
-        progreso >= 0.9) {
+        (progreso >= 0.9 && progreso < 1.0)) {
       NotificationService.sendNotification(
         'Proyecto casi terminado',
         '¡Estás cerca de terminar tu proyecto!',

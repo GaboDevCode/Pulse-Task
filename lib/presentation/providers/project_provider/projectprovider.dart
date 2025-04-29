@@ -5,11 +5,23 @@ import 'package:pulse_task/domain/models/task_model/tarea.dart';
 
 class Projectprovider extends ChangeNotifier {
   List<Proyecto> _proyectos = [];
+  List<Tarea> _tareas = [];
+
   final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
 
   Projectprovider(Type database);
 
   List<Proyecto> get proyectos => _proyectos;
+
+  double calcularProgresoProyecto(int proyectoId, List<Tarea> tareas) {
+    final tareasProyecto =
+        tareas.where((t) => t.proyectoId == proyectoId).toList();
+    if (tareasProyecto.isEmpty) return 0.0;
+
+    final tareasCompletadas =
+        tareasProyecto.where((t) => t.estado == 'completado').length;
+    return tareasCompletadas / tareasProyecto.length;
+  }
 
   Future<void> loadProyectos() async {
     _proyectos = await _databaseHelper.readallProyectos();
@@ -35,13 +47,29 @@ class Projectprovider extends ChangeNotifier {
     return _proyectos.where((p) => p.relevancia == 3).toList();
   }
 
-  double calcularProgresoProyecto(int proyectoId, List<Tarea> tareas) {
-    final tareasProyecto =
-        tareas.where((t) => t.proyectoId == proyectoId).toList();
-    if (tareasProyecto.isEmpty) return 0.0;
+  Future<void> actualizarEstadoProyecto(
+    int proyectoId,
+    String nuevoEstado,
+  ) async {
+    final db = await DatabaseHelper.instance.database;
+    await db.update(
+      'proyectos',
+      {'estado': nuevoEstado},
+      where: 'id =?',
+      whereArgs: [proyectoId],
+    );
 
-    final tareasCompletadas =
-        tareasProyecto.where((t) => t.estado == 'completado').length;
-    return tareasCompletadas / tareasProyecto.length;
+    // Refrescar la memoria
+    final idx = _proyectos.indexWhere((p) => p.id == proyectoId);
+    if (idx != -1) {
+      _proyectos[idx].estado = nuevoEstado;
+      notifyListeners();
+    }
   }
+
+  List<Proyecto> get proyectosActivos =>
+      _proyectos.where((p) => p.estado != 'completado').toList();
+
+  List<Proyecto> get proyectosCompletados =>
+      _proyectos.where((p) => p.estado == 'completado').toList();
 }

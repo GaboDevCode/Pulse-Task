@@ -25,7 +25,7 @@ class _ProyectsViewState extends State<ProyectsView> {
 
   @override
   Widget build(BuildContext context) {
-    final proyectos = context.watch<Projectprovider>().proyectos;
+    final proyectos = context.watch<Projectprovider>().proyectosActivos;
     final colorTema = Theme.of(context).colorScheme.primary;
 
     return Scaffold(
@@ -124,7 +124,7 @@ class _ProyectsViewState extends State<ProyectsView> {
                                   builder: (BuildContext context) {
                                     return AlertDialog(
                                       title: const Text(
-                                        'Seguro que desea eliminar el proyecto?',
+                                        ' ¿Seguro que desea eliminar el proyecto?',
                                       ),
                                       content: const Text(
                                         'Esta acción no se puede deshacer.',

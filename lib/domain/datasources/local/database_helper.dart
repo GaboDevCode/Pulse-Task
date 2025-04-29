@@ -30,6 +30,7 @@ class DatabaseHelper {
         descripcion TEXT NOT NULL,
         categoria TEXT NOT NULL,
         relevancia INTEGER NOT NULL, 
+        estado TEXT NOT NULL,
         fechaInicio TEXT NOT NULL,
         fechaFin TEXT
 

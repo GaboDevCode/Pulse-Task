@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pulse_task/domain/models/task_model/tarea.dart';
+import 'package:pulse_task/presentation/providers/project_provider/projectprovider.dart';
 import 'package:pulse_task/presentation/providers/task_provider/taskprojectprovider.dart';
 import 'package:pulse_task/presentation/widgets/tareasformcard.dart';
 
@@ -94,14 +95,8 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                             if (value != null) {
                               final nuevoEstado =
                                   value ? 'completado' : 'pendiente';
-                              final tareaActualizada = Tarea(
-                                id: tarea.id,
-                                nombre: tarea.nombre,
-                                descripcion: tarea.descripcion,
+                              final tareaActualizada = tarea.copyWith(
                                 estado: nuevoEstado,
-                                fechaCreacion: tarea.fechaCreacion,
-                                notificado: tarea.notificado,
-                                proyectoId: tarea.proyectoId,
                               );
                               Provider.of<TaskProvider>(
                                 context,
@@ -168,7 +163,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                                   builder: (BuildContext context) {
                                     return AlertDialog(
                                       title: Text(
-                                        'Seguro que desea eliminar esta tarea?',
+                                        '¿Seguro que desea eliminar esta tarea?',
                                       ),
                                       content: Text(
                                         'Esta acción no se puede deshacer.',
@@ -182,7 +177,6 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                                         ),
                                         TextButton(
                                           onPressed: () {
-                                            // Aquí puedes agregar la lógica para eliminar el proyecto
                                             Provider.of<TaskProvider>(
                                               context,
                                               listen: false,

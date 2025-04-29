@@ -5,6 +5,7 @@ class Proyecto {
   final String descripcion;
   final String categoria;
   final int? relevancia;
+  String estado;
   final DateTime fechaInicio;
   final DateTime? fechaFin;
 
@@ -15,6 +16,7 @@ class Proyecto {
     required this.descripcion,
     required this.categoria,
     this.relevancia,
+    required this.estado,
     required this.fechaInicio,
     this.fechaFin,
   });
@@ -26,6 +28,7 @@ class Proyecto {
       'descripcion': descripcion,
       'categoria': categoria,
       'relevancia': relevancia,
+      'estado': estado,
       'fechaInicio': fechaInicio.toIso8601String(),
       'fechaFin': fechaFin?.toIso8601String(),
     };
@@ -38,6 +41,7 @@ class Proyecto {
       descripcion: map['descripcion'],
       categoria: map['categoria'],
       relevancia: map['relevancia'],
+      estado: map['estado'] as String,
       fechaInicio: DateTime.parse(map['fechaInicio']),
       fechaFin:
           map['fechaFin'] != null ? DateTime.parse(map['fechaFin']) : null,

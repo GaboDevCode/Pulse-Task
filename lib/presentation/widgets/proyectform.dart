@@ -54,6 +54,7 @@ class _AddProyectState extends State<AddProyect> {
   late String _selectedCategory;
   late String _selectedrelevancia;
   late DateTime _fechaInicio;
+  late String _estado = 'pendiente';
   DateTime? _fechaFin;
 
   final List<String> _categories = [
@@ -244,6 +245,7 @@ class _AddProyectState extends State<AddProyect> {
                               descripcion: _description,
                               categoria: _selectedCategory,
                               fechaInicio: _fechaInicio,
+                              estado: _estado,
                               fechaFin: _fechaFin,
                               relevancia: int.parse(_selectedrelevancia),
                             );

@@ -6,6 +6,7 @@ import 'package:pulse_task/domain/models/proyect_model/proyecto.dart';
 import 'package:pulse_task/presentation/screens/home/home_view.dart';
 import 'package:pulse_task/presentation/screens/profile/profile_view.dart';
 import 'package:pulse_task/presentation/screens/proyects/detailsproyect_view.dart';
+import 'package:pulse_task/presentation/screens/proyects/proyectscomplete_view.dart';
 import 'package:pulse_task/presentation/widgets/proyectform.dart';
 
 final appRouter = GoRouter(
@@ -40,6 +41,11 @@ final appRouter = GoRouter(
           path: 'profile', // Ruta única para el formulario
           name: 'profile',
           builder: (context, state) => const ProfileView(),
+        ),
+        GoRoute(
+          path: 'proyectComplete',
+          name: 'proyectComplete',
+          builder: (context, state) => ProyectosCompletadosView(),
         ),
       ],
     ),

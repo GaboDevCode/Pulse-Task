@@ -21,6 +21,28 @@ class Tarea {
     required this.proyectoId,
   });
 
+  Tarea copyWith({
+    int? id,
+    String? nombre,
+    String? descripcion,
+    String? estado,
+    DateTime? fechaCreacion,
+    DateTime? fechaVencimiento,
+    int? notificado,
+    int? proyectoId,
+  }) {
+    return Tarea(
+      id: id ?? this.id,
+      nombre: nombre ?? this.nombre,
+      descripcion: descripcion ?? this.descripcion,
+      estado: estado ?? this.estado,
+      fechaCreacion: fechaCreacion ?? this.fechaCreacion,
+      fechaVencimiento: fechaVencimiento ?? this.fechaVencimiento,
+      notificado: notificado ?? this.notificado,
+      proyectoId: proyectoId ?? this.proyectoId,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,

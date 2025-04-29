@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pulse_task/configuration/correo/message_correo.dart';
 import 'package:pulse_task/presentation/providers/profile_provider/profile_provider.dart';
 
 import 'package:provider/provider.dart';
@@ -94,30 +96,17 @@ class ProfileOptions extends StatelessWidget {
     final colorTema = Theme.of(context).colorScheme.primary;
     return Column(
       children: [
-        Card(
-          color: colorTema,
-          child: InkWell(
-            borderRadius: BorderRadius.circular(10),
-            onTap: () {},
-            child: Padding(
-              padding: EdgeInsets.all(12),
-              child: Row(
-                children: [
-                  Icon(Icons.favorite, color: Colors.redAccent),
-                  SizedBox(width: 12),
-                  Text('Valoranos', style: TextStyle(fontSize: 18)),
-                ],
-              ),
-            ),
-          ),
-        ),
         SizedBox(height: 8),
 
         Card(
           color: colorTema,
           child: InkWell(
             borderRadius: BorderRadius.circular(10),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => const FeedbackView()));
+            },
             child: Padding(
               padding: EdgeInsets.all(12),
               child: Row(
@@ -135,7 +124,11 @@ class ProfileOptions extends StatelessWidget {
           color: colorTema,
           child: InkWell(
             borderRadius: BorderRadius.circular(10),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => const FeedbackView()));
+            },
             child: Padding(
               padding: EdgeInsets.all(12),
               child: Row(
@@ -154,14 +147,19 @@ class ProfileOptions extends StatelessWidget {
           color: colorTema,
           child: InkWell(
             borderRadius: BorderRadius.circular(10),
-            onTap: () {},
+            onTap: () {
+              context.goNamed('proyectComplete');
+            },
             child: Padding(
               padding: EdgeInsets.all(12),
               child: Row(
                 children: [
-                  Icon(Icons.group_add_sharp, color: Colors.blue),
+                  Icon(Icons.check, color: Colors.greenAccent),
                   SizedBox(width: 12),
-                  Text('Invita a un amigo ', style: TextStyle(fontSize: 18)),
+                  Text(
+                    'Proyectos completados ',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ],
               ),
             ),

@@ -34,15 +34,20 @@ class TaskProvider extends ChangeNotifier {
     await loadTareasPorProyecto(tarea.proyectoId);
   }
 
+  Future<void> completarTarea(Tarea tarea) async {
+    final tareaCompletada = tarea.copyWith(estado: 'completado');
+    await _databaseHelper.updateTask(tareaCompletada);
+    final index = _tareas.indexWhere((t) => t.id == tarea.id);
+    if (index != -1) {
+      _tareas[index] = tareaCompletada;
+      notifyListeners();
+    }
+  }
+
   Future<void> marcarComoNotificada(int tareaId) async {
     await _databaseHelper.marcarComoNotificada(tareaId);
   }
 
-  // Future<void> tareaCompletada(Tarea tarea, int completado) async {
-  //   await _databaseHelper.tareaCompletada(tarea, tarea.completado);
-  // }
-
-  /// Filtra las tareas por vencer dentro de los próximos [dias]
   Future<List<Tarea>> getTareasPorVencerEn(int dias) async {
     return await _databaseHelper.getTaskPorVencerEn(dias);
   }
