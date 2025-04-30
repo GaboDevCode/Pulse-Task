@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:pulse_task/configuration/theme/app_theme.dart';
 import 'package:pulse_task/presentation/providers/profile_provider/profile_provider.dart';

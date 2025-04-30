@@ -72,6 +72,7 @@ class _DetailsproyectViewState extends State<DetailsproyectView> {
                       widget.proyecto.id!,
                       'completado',
                     );
+                    // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                   },
                   child: const Text('Sí'),
@@ -285,11 +286,13 @@ class _DetailsproyectViewState extends State<DetailsproyectView> {
       taskProvider.tareas,
     );
 
+    if (proyecto.estado == 'completado') return;
+
     if ((proyecto.fechaFin != null &&
             proyecto.fechaFin!.isBefore(
               currentDate.add(const Duration(days: 3)),
             )) ||
-        (progreso >= 0.9 && progreso < 1.0)) {
+        (progreso >= 0.8 && progreso < 1.0)) {
       NotificationService.sendNotification(
         'Proyecto casi terminado',
         '¡Estás cerca de terminar tu proyecto!',

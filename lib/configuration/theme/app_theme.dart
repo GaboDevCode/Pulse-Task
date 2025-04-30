@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static final List<Color> colors = [
+    Colors.blue,
+
     Colors.red,
     Colors.green,
-    Colors.blue,
     Colors.yellow,
     Colors.orange,
     Colors.purple,
@@ -20,9 +21,9 @@ class AppTheme {
   }
 
   static String getColorName(Color color) {
+    if (color == Colors.blue) return 'Azul';
     if (color == Colors.red) return 'Rojo';
     if (color == Colors.green) return 'Verde';
-    if (color == Colors.blue) return 'Azul';
     if (color == Colors.yellow) return 'Amarillo';
     if (color == Colors.orange) return 'Naranja';
     if (color == Colors.purple) return 'Morado';

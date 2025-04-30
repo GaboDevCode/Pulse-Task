@@ -7,13 +7,14 @@ class TareaFormCard extends StatefulWidget {
   final Function(Tarea) onGuardar;
 
   const TareaFormCard({
-    Key? key,
+    super.key,
     required this.proyectoId,
     this.tareaExistente,
     required this.onGuardar,
-  }) : super(key: key);
+  });
 
   @override
+  // ignore: library_private_types_in_public_api
   _TareaFormCardState createState() => _TareaFormCardState();
 }
 

@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 class FeedbackView extends StatefulWidget {
   const FeedbackView({super.key});
   @override
+  // ignore: library_private_types_in_public_api
   _FeedbackViewState createState() => _FeedbackViewState();
 }
 
@@ -19,6 +20,7 @@ class _FeedbackViewState extends State<FeedbackView> {
     );
     if (!await launchUrl(mailto, mode: LaunchMode.externalApplication)) {
       if (context.mounted) {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('No se pudo abrir la app de correo.')),
         );

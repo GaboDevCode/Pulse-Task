@@ -1,7 +1,7 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pulse_task/domain/models/task_model/tarea.dart';
-import 'package:pulse_task/presentation/providers/project_provider/projectprovider.dart';
 import 'package:pulse_task/presentation/providers/task_provider/taskprojectprovider.dart';
 import 'package:pulse_task/presentation/widgets/tareasformcard.dart';
 

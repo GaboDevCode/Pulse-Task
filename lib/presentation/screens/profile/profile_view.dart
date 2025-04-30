@@ -20,6 +20,7 @@ class ProfileView extends StatelessWidget {
     );
 
     if (pickedFile != null) {
+      if (!context.mounted) return;
       Provider.of<ProfileProvider>(
         context,
         listen: false,

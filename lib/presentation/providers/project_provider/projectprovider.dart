@@ -5,7 +5,6 @@ import 'package:pulse_task/domain/models/task_model/tarea.dart';
 
 class Projectprovider extends ChangeNotifier {
   List<Proyecto> _proyectos = [];
-  List<Tarea> _tareas = [];
 
   final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
 

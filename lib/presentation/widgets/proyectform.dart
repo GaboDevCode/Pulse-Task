@@ -54,6 +54,7 @@ class _AddProyectState extends State<AddProyect> {
   late String _selectedCategory;
   late String _selectedrelevancia;
   late DateTime _fechaInicio;
+  // ignore: prefer_final_fields
   late String _estado = 'pendiente';
   DateTime? _fechaFin;
 
@@ -258,6 +259,7 @@ class _AddProyectState extends State<AddProyect> {
                               }
 
                               if (!mounted) return;
+                              // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
@@ -271,8 +273,10 @@ class _AddProyectState extends State<AddProyect> {
                               await Future.delayed(
                                 const Duration(milliseconds: 500),
                               );
+                              // ignore: use_build_context_synchronously
                               if (mounted) context.goNamed('home');
                             } catch (e) {
+                              // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text('❌ Error: ${e.toString()}'),

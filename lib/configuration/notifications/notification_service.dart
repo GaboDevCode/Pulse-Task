@@ -8,7 +8,7 @@ class NotificationService {
 
   static Future<void> initialize() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('notificacion');
+        AndroidInitializationSettings('alarmaicon');
     const InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
