@@ -40,7 +40,7 @@ final appRouter = GoRouter(
         GoRoute(
           path: 'profile', // Ruta única para el formulario
           name: 'profile',
-          builder: (context, state) => const ProfileView(),
+          builder: (context, state) => ProfileView(),
         ),
         GoRoute(
           path: 'proyectComplete',

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:pulse_task/configuration/notifications/notification_service.dart';
 import 'package:pulse_task/configuration/router/routes.dart';
@@ -32,6 +33,8 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
+  await MobileAds.instance.initialize(); //Inicializanodo Admob
 
   // 2. Inicializar la base de datos ANTES de runApp
   final database = DatabaseHelper;
