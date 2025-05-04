@@ -6,6 +6,7 @@ import 'package:pulse_task/configuration/correo/message_correo.dart';
 import 'package:pulse_task/presentation/providers/profile_provider/profile_provider.dart';
 
 import 'package:provider/provider.dart';
+import 'package:pulse_task/presentation/widgets/schedulebutton.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -166,6 +167,7 @@ class ProfileOptions extends StatelessWidget {
             ),
           ),
         ),
+        ScheduleButton(),
       ],
     );
   }

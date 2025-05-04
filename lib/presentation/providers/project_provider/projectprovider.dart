@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:pulse_task/domain/datasources/local/database_helper.dart';
 import 'package:pulse_task/domain/models/proyect_model/proyecto.dart';
 import 'package:pulse_task/domain/models/task_model/tarea.dart';
+import 'package:pulse_task/presentation/widgets/InterstitialAdManager.dart';
 
 class Projectprovider extends ChangeNotifier {
   List<Proyecto> _proyectos = [];
+  final InterstitialAdManager _adManager;
+  final DatabaseHelper _databaseHelper;
 
-  final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
-
-  Projectprovider(Type database);
+  Projectprovider(this._adManager, this._databaseHelper) {
+    _adManager.loadInterstitialAd(); // precargamos el anuncio
+  }
 
   List<Proyecto> get proyectos => _proyectos;
 
@@ -30,16 +33,28 @@ class Projectprovider extends ChangeNotifier {
   Future<void> addProyecto(Proyecto proyecto) async {
     await _databaseHelper.createProyecto(proyecto);
     await loadProyectos();
+    final adShow = await _adManager.showIntersticial();
+    if (!adShow) {
+      debugPrint("Error al mostrar el anuncio");
+    }
   }
 
   Future<void> updateProyecto(Proyecto proyecto) async {
     await _databaseHelper.updateProyecto(proyecto);
     await loadProyectos();
+    final adShow = await _adManager.showIntersticial();
+    if (!adShow) {
+      debugPrint("Error al mostrar el anuncio");
+    }
   }
 
   Future<void> deleteProyecto(int id) async {
     await _databaseHelper.deleteProyecto(id);
     await loadProyectos();
+    final adShow = await _adManager.showIntersticial();
+    if (!adShow) {
+      debugPrint("Error al mostrar el anuncio");
+    }
   }
 
   List<Proyecto> get proyectoPrioridadAlta {

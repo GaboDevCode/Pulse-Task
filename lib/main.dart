@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ import 'package:pulse_task/presentation/providers/project_provider/projectprovid
 import 'package:pulse_task/presentation/providers/task_provider/taskprojectprovider.dart';
 import 'package:pulse_task/presentation/providers/theme_provider/ThemeProvider.dart';
 import 'package:flutter/services.dart';
+import 'package:pulse_task/presentation/widgets/InterstitialAdManager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +30,16 @@ void main() async {
     return true;
   };
 
+  // Configuracion  de firebase remote config
+  // final remoteConfig = FirebaseRemoteConfig.instance;
+
+  // remoteConfig.setConfigSettings(
+  //   RemoteConfigSettings(
+  //     fetchTimeout: Duration(milliseconds: 100),
+  //     minimumFetchInterval: Duration(hours: 12),
+  //   ),
+  // );
+  //await remoteConfig.fetchAndActivate();
   // 1. Bloquear orientación
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -37,7 +49,8 @@ void main() async {
   await MobileAds.instance.initialize(); //Inicializanodo Admob
 
   // 2. Inicializar la base de datos ANTES de runApp
-  final database = DatabaseHelper;
+  final database = DatabaseHelper.instance;
+  final adManager = InterstitialAdManager();
 
   // 3. Inicializar las notificaciones ANTES de runApp
   await NotificationService.initialize();
@@ -46,7 +59,9 @@ void main() async {
     MultiProvider(
       providers: [
         // 4. Pasar la BD a los providers que lo necesiten (ej: TaskProvider)
-        ChangeNotifierProvider(create: (_) => Projectprovider(database)),
+        ChangeNotifierProvider(
+          create: (_) => Projectprovider(adManager, database),
+        ),
         ChangeNotifierProvider(create: (_) => Themeprovider()),
         ChangeNotifierProvider(
           create: (_) => TaskProvider(database), // Ejemplo: Inyectar BD

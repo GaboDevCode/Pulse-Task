@@ -137,11 +137,14 @@ class _ProyectsViewState extends State<ProyectsView> {
                                           child: const Text('Cancelar'),
                                         ),
                                         TextButton(
-                                          onPressed: () {
-                                            Provider.of<Projectprovider>(
-                                              context,
-                                              listen: false,
-                                            ).deleteProyecto(proyecto.id!);
+                                          onPressed: () async {
+                                            // 1. Cerrar el diálogo
+                                            final provider =
+                                                context.read<Projectprovider>();
+                                            await provider.deleteProyecto(
+                                              proyecto.id!,
+                                            );
+                                            // ignore: use_build_context_synchronously
                                             Navigator.of(context).pop();
                                           },
                                           child: const Text('Eliminar'),
