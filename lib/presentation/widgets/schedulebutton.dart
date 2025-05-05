@@ -12,6 +12,18 @@ class ScheduleButton extends StatefulWidget {
 
 class _ScheduleButtonState extends State<ScheduleButton> {
   bool _isScheduled = false;
+  final shedule = NotificationRemember();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadScheduledState();
+  }
+
+  Future<void> _loadScheduledState() async {
+    final wasScheduled = await shedule.getScheduledFlag();
+    setState(() => _isScheduled = wasScheduled);
+  }
 
   Future<void> _scheduleNotifications() async {
     try {
@@ -32,6 +44,16 @@ class _ScheduleButtonState extends State<ScheduleButton> {
           ],
           time: const TimeOfDay(hour: 9, minute: 30),
         );
+
+        // 2) Debug: listar pendientes
+        final pending =
+            await NotificationRemember.notificationsPlugin
+                .pendingNotificationRequests();
+        debugPrint(
+          'Notificaciones pendientes: ${pending.map((r) => r.id).toList()}',
+        );
+
+        await shedule.setScheduledFlag(true);
 
         setState(() => _isScheduled = true);
         // ignore: use_build_context_synchronously

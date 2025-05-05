@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:pulse_task/domain/datasources/local/database_helper.dart';
 import 'package:pulse_task/domain/models/task_model/tarea.dart';
+import 'package:pulse_task/presentation/widgets/InterstitialAdManager.dart';
 
 class TaskProvider extends ChangeNotifier {
   List<Tarea> _tareas = [];
-  final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
+  final InterstitialAdManager _adManager;
+  final DatabaseHelper _databaseHelper;
+  int _tareasCreadas = 0;
 
-  TaskProvider(database);
-
+  TaskProvider(this._adManager, this._databaseHelper) {
+    _adManager.loadInterstitialAd();
+  }
   List<Tarea> get tareas => _tareas;
 
   Future<void> loadTareasPorProyecto(int proyectoId) async {
@@ -18,6 +22,11 @@ class TaskProvider extends ChangeNotifier {
   Future<void> addTarea(Tarea tarea) async {
     await _databaseHelper.createTask(tarea);
     await loadTareasPorProyecto(tarea.proyectoId);
+    _tareasCreadas++;
+
+    if (_tareasCreadas % 3 == 0) {
+      await _adManager.showIntersticial();
+    }
   }
 
   Future<void> updateTarea(Tarea tarea) async {

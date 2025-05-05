@@ -22,6 +22,7 @@ class Projectprovider extends ChangeNotifier {
 
     final tareasCompletadas =
         tareasProyecto.where((t) => t.estado == 'completado').length;
+
     return tareasCompletadas / tareasProyecto.length;
   }
 
@@ -53,6 +54,7 @@ class Projectprovider extends ChangeNotifier {
     await loadProyectos();
     final adShow = await _adManager.showIntersticial();
     if (!adShow) {
+      ///////////////
       debugPrint("Error al mostrar el anuncio");
     }
   }

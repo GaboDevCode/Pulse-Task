@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
@@ -30,17 +29,6 @@ void main() async {
     return true;
   };
 
-  // Configuracion  de firebase remote config
-  // final remoteConfig = FirebaseRemoteConfig.instance;
-
-  // remoteConfig.setConfigSettings(
-  //   RemoteConfigSettings(
-  //     fetchTimeout: Duration(milliseconds: 100),
-  //     minimumFetchInterval: Duration(hours: 12),
-  //   ),
-  // );
-  //await remoteConfig.fetchAndActivate();
-  // 1. Bloquear orientación
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -64,7 +52,8 @@ void main() async {
         ),
         ChangeNotifierProvider(create: (_) => Themeprovider()),
         ChangeNotifierProvider(
-          create: (_) => TaskProvider(database), // Ejemplo: Inyectar BD
+          create:
+              (_) => TaskProvider(adManager, database), // Ejemplo: Inyectar BD
         ),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
       ],

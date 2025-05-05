@@ -1,4 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter/material.dart';
@@ -7,11 +9,16 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 class NotificationRemember {
   static final FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
+  static const _prefsKey = 'notificationsScheduled';
 
   static Future<void> initialize() async {
     try {
       // Inicialización de timezone
       tz_data.initializeTimeZones();
+
+      // 2) Obtén la zona local del dispositivo
+      final String localTz = await FlutterNativeTimezone.getLocalTimezone();
+      tz.setLocalLocation(tz.getLocation(localTz));
 
       // Configuración para Android
       const AndroidInitializationSettings androidSettings =
@@ -138,5 +145,15 @@ class NotificationRemember {
     }
 
     return scheduledDate;
+  }
+
+  Future<void> setScheduledFlag(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_prefsKey, value);
+  }
+
+  Future<bool> getScheduledFlag() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_prefsKey) ?? false;
   }
 }
