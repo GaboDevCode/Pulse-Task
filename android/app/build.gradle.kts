@@ -10,7 +10,6 @@ plugins {
 
 android {
     namespace = "com.example.pulse_task"
-    namespace 'com.lyokone.flutter_native_timezone'
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
     

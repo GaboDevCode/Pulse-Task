@@ -1,5 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
@@ -17,8 +17,12 @@ class NotificationRemember {
       tz_data.initializeTimeZones();
 
       // 2) Obtén la zona local del dispositivo
-      final String localTz = await FlutterNativeTimezone.getLocalTimezone();
-      tz.setLocalLocation(tz.getLocation(localTz));
+      // Código nuevo (con flutter_timezone)
+      final String localTz =
+          await FlutterTimezone.getLocalTimezone(); // <-- ¡Cambia aquí!
+      tz.setLocalLocation(
+        tz.getLocation(localTz),
+      ); // <-- Esto se mantiene igual
 
       // Configuración para Android
       const AndroidInitializationSettings androidSettings =

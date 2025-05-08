@@ -3,8 +3,11 @@ import 'dart:ui';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
+import 'package:pulse_task/configuration/configurationRemote/configurationRemote.dart';
 import 'package:pulse_task/configuration/notifications/notification_service.dart';
 import 'package:pulse_task/configuration/router/routes.dart';
 import 'package:pulse_task/configuration/theme/app_theme.dart';
@@ -17,11 +20,23 @@ import 'package:pulse_task/presentation/providers/theme_provider/ThemeProvider.d
 import 'package:flutter/services.dart';
 import 'package:pulse_task/presentation/widgets/InterstitialAdManager.dart';
 
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // 1. Obtiene la zona horaria
+  final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
+
+  // 2. Inicializa la base de datos de timezone (si usas el paquete)
+  tz.initializeTimeZones(); // <-- ¡Importante!
+  // 3. Configura la ubicación local
+  tz.setLocalLocation(tz.getLocation(currentTimeZone));
 
   // inicializar firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  //configuracion remota
+  await initializeRemoteConfig();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
   PlatformDispatcher.instance.onError = (error, stack) {
@@ -42,6 +57,8 @@ void main() async {
 
   // 3. Inicializar las notificaciones ANTES de runApp
   await NotificationService.initialize();
+
+  await dotenv.load();
 
   runApp(
     MultiProvider(

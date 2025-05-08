@@ -1,17 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class InterstitialAdManager {
   InterstitialAd? _interstitialAd;
   bool isAdLoaded = false;
 
-  //Cargamos el anuncio de admob
-
   Future<void> loadInterstitialAd() async {
     InterstitialAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/1033173712',
+      adUnitId: '${dotenv.env['ADMOB_INTERSTITIAL_ID']}',
       request: AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
