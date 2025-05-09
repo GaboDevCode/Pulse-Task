@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "52018672675",
-    "project_id": "pulsetask-2346c",
-    "storage_bucket": "pulsetask-2346c.firebasestorage.app"
+    "project_number": "309551421001",
+    "project_id": "pulse-task",
+    "storage_bucket": "pulse-task.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:52018672675:android:ceffe5e180399d23f2ed96",
+        "mobilesdk_app_id": "1:309551421001:android:a20e9c95ab492057209198",
         "android_client_info": {
-          "package_name": "com.example.pulse_task"
+          "package_name": "com.gabrieleduardo.pulsetask"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB9ofqDOwQ6RyFR8VsvNjBeZA3M49dhWYs"
+          "current_key": "AIzaSyB78Ma8VAAVYPlc-LPB4g-YA3e-gyYrDXY"
         }
       ],
       "services": {

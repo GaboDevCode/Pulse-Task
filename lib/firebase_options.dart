@@ -41,48 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAsLauMMFU83IT6OZHjOEcGg1nstcv-1lo',
-    appId: '1:52018672675:web:169ea892540a9652f2ed96',
-    messagingSenderId: '52018672675',
-    projectId: 'pulsetask-2346c',
-    authDomain: 'pulsetask-2346c.firebaseapp.com',
-    storageBucket: 'pulsetask-2346c.firebasestorage.app',
-    measurementId: 'G-N75GN94MRD',
+    apiKey: 'AIzaSyBMQmMA3YAAnYim4m4K1hkJf7h2c_nsBI8',
+    appId: '1:309551421001:web:275dfb9899c3ef81209198',
+    messagingSenderId: '309551421001',
+    projectId: 'pulse-task',
+    authDomain: 'pulse-task.firebaseapp.com',
+    storageBucket: 'pulse-task.firebasestorage.app',
+    measurementId: 'G-6ZE2PW307Y',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB9ofqDOwQ6RyFR8VsvNjBeZA3M49dhWYs',
-    appId: '1:52018672675:android:ceffe5e180399d23f2ed96',
-    messagingSenderId: '52018672675',
-    projectId: 'pulsetask-2346c',
-    storageBucket: 'pulsetask-2346c.firebasestorage.app',
+    apiKey: 'AIzaSyB78Ma8VAAVYPlc-LPB4g-YA3e-gyYrDXY',
+    appId: '1:309551421001:android:a20e9c95ab492057209198',
+    messagingSenderId: '309551421001',
+    projectId: 'pulse-task',
+    storageBucket: 'pulse-task.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAeTljsa7hfozTCcsZGivpqRHwQVGiePwc',
-    appId: '1:52018672675:ios:a73b74a493ba5ff6f2ed96',
-    messagingSenderId: '52018672675',
-    projectId: 'pulsetask-2346c',
-    storageBucket: 'pulsetask-2346c.firebasestorage.app',
-    iosBundleId: 'com.example.pulseTask',
+    apiKey: 'AIzaSyAY_aMrSSplO9fPq2d1XEXlGErg3jLlPPM',
+    appId: '1:309551421001:ios:7531691953768e80209198',
+    messagingSenderId: '309551421001',
+    projectId: 'pulse-task',
+    storageBucket: 'pulse-task.firebasestorage.app',
+    iosBundleId: 'com.gabrieleduardo.pulsetask',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAeTljsa7hfozTCcsZGivpqRHwQVGiePwc',
-    appId: '1:52018672675:ios:a73b74a493ba5ff6f2ed96',
-    messagingSenderId: '52018672675',
-    projectId: 'pulsetask-2346c',
-    storageBucket: 'pulsetask-2346c.firebasestorage.app',
+    apiKey: 'AIzaSyAY_aMrSSplO9fPq2d1XEXlGErg3jLlPPM',
+    appId: '1:309551421001:ios:813c8cabbe8a397e209198',
+    messagingSenderId: '309551421001',
+    projectId: 'pulse-task',
+    storageBucket: 'pulse-task.firebasestorage.app',
     iosBundleId: 'com.example.pulseTask',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyAsLauMMFU83IT6OZHjOEcGg1nstcv-1lo',
-    appId: '1:52018672675:web:41fab66b5a01609bf2ed96',
-    messagingSenderId: '52018672675',
-    projectId: 'pulsetask-2346c',
-    authDomain: 'pulsetask-2346c.firebaseapp.com',
-    storageBucket: 'pulsetask-2346c.firebasestorage.app',
-    measurementId: 'G-P3YYDQCH8C',
+    apiKey: 'AIzaSyBMQmMA3YAAnYim4m4K1hkJf7h2c_nsBI8',
+    appId: '1:309551421001:web:cefe55162cd61749209198',
+    messagingSenderId: '309551421001',
+    projectId: 'pulse-task',
+    authDomain: 'pulse-task.firebaseapp.com',
+    storageBucket: 'pulse-task.firebasestorage.app',
+    measurementId: 'G-SSY0DB3HFV',
   );
+
 }
