@@ -3,8 +3,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class FeedbackView extends StatefulWidget {
   const FeedbackView({super.key});
+
   @override
-  // ignore: library_private_types_in_public_api
   _FeedbackViewState createState() => _FeedbackViewState();
 }
 
@@ -13,14 +13,13 @@ class _FeedbackViewState extends State<FeedbackView> {
   final _mensajeCtrl = TextEditingController();
 
   Future<void> _enviarEmail() async {
-    final mailto = Uri(
-      scheme: 'mailto',
-      path: 'kr4v3n27@gmail.com',
-      queryParameters: {'subject': _asuntoCtrl.text, 'body': _mensajeCtrl.text},
-    );
+    final String asunto = Uri.encodeComponent(_asuntoCtrl.text);
+    final String mensaje = Uri.encodeComponent(_mensajeCtrl.text);
+
+    final Uri mailto = Uri.parse('xxxxxxxxxxx');
+
     if (!await launchUrl(mailto, mode: LaunchMode.externalApplication)) {
       if (context.mounted) {
-        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('No se pudo abrir la app de correo.')),
         );
@@ -31,29 +30,29 @@ class _FeedbackViewState extends State<FeedbackView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Contacto')),
+      appBar: AppBar(title: const Text('Contacto')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             TextField(
               controller: _asuntoCtrl,
-              decoration: InputDecoration(labelText: 'Asunto'),
+              decoration: const InputDecoration(labelText: 'Asunto'),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Expanded(
               child: TextField(
                 controller: _mensajeCtrl,
-                decoration: InputDecoration(labelText: 'Mensaje'),
+                decoration: const InputDecoration(labelText: 'Mensaje'),
                 maxLines: null,
                 expands: true,
                 textAlignVertical: TextAlignVertical.top,
               ),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             ElevatedButton.icon(
-              icon: Icon(Icons.send),
-              label: Text('Enviar'),
+              icon: const Icon(Icons.send),
+              label: const Text('Enviar'),
               onPressed: _enviarEmail,
             ),
           ],

@@ -14,7 +14,10 @@ class HomeContent extends StatelessWidget {
     return SafeArea(
       child: Consumer<Projectprovider>(
         builder: (context, projectProvider, child) {
-          final proyectosAlta = projectProvider.proyectoPrioridadAlta;
+          final proyectosAlta =
+              projectProvider.proyectoPrioridadAlta
+                  .where((proyecto) => proyecto.estado != 'completado')
+                  .toList();
 
           return ListView.builder(
             padding: const EdgeInsets.all(8),

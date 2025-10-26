@@ -180,6 +180,7 @@ class _AddProyectState extends State<AddProyect> {
               ),
             ),
             const SizedBox(height: 8),
+
             DropdownButtonFormField<String>(
               value: _selectedCategory,
               dropdownColor: const Color(0xFF222121),
@@ -198,6 +199,7 @@ class _AddProyectState extends State<AddProyect> {
                 ),
               ),
             ),
+
             const SizedBox(height: 16),
 
             // Campo: Relevancia

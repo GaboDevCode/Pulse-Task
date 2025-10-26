@@ -10,7 +10,7 @@ import 'package:pulse_task/presentation/screens/proyects/proyectscomplete_view.d
 import 'package:pulse_task/presentation/widgets/proyectform.dart';
 
 final appRouter = GoRouter(
-  initialLocation: RouteNames.home,
+  initialLocation: RouteNames.home, // MOSTRAR splash primero
   routes: [
     GoRoute(
       path: RouteNames.home,
@@ -18,14 +18,13 @@ final appRouter = GoRouter(
       builder: (context, state) => const HomeView(),
       routes: [
         GoRoute(
-          path: 'proyects/form', // Ruta única para el formulario
+          path: 'proyects/form',
           name: 'proyect_form',
           builder: (context, state) {
-            // Si hay "extra", es edición; si no, es creación
             final proyecto = state.extra as Proyecto?;
             return Proyectform(
               proyectoExistente: proyecto,
-              isEditing: proyecto != null, // true si hay proyecto
+              isEditing: proyecto != null,
             );
           },
         ),
@@ -38,7 +37,7 @@ final appRouter = GoRouter(
           },
         ),
         GoRoute(
-          path: 'profile', // Ruta única para el formulario
+          path: 'profile',
           name: 'profile',
           builder: (context, state) => ProfileView(),
         ),

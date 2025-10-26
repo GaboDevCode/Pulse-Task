@@ -5,13 +5,24 @@ import 'package:pulse_task/presentation/widgets/InterstitialAdManager.dart';
 
 class TaskProvider extends ChangeNotifier {
   List<Tarea> _tareas = [];
-  final InterstitialAdManager _adManager;
+  InterstitialAdManager? _adManager;
   final DatabaseHelper _databaseHelper;
   int _tareasCreadas = 0;
+  int _tareasEliminadas = 0;
+  int _tareasCompletadas = 0;
 
   TaskProvider(this._adManager, this._databaseHelper) {
-    _adManager.loadInterstitialAd();
+    // Precargar anuncio solo si está disponible
+    _adManager?.loadInterstitialAd();
   }
+
+  void updateAdManager(InterstitialAdManager newManager) {
+    _adManager = newManager;
+    // Precargar anuncio cuando se actualice
+    _adManager?.loadInterstitialAd();
+    notifyListeners();
+  }
+
   List<Tarea> get tareas => _tareas;
 
   Future<void> loadTareasPorProyecto(int proyectoId) async {
@@ -24,8 +35,9 @@ class TaskProvider extends ChangeNotifier {
     await loadTareasPorProyecto(tarea.proyectoId);
     _tareasCreadas++;
 
-    if (_tareasCreadas % 3 == 0) {
-      await _adManager.showIntersticial();
+    // Mostrar anuncio solo si está disponible y se cumple la condición
+    if (_tareasCreadas % 3 == 0 && _adManager != null) {
+      await _adManager!.showInterstitial();
     }
   }
 
@@ -41,6 +53,11 @@ class TaskProvider extends ChangeNotifier {
   Future<void> deleteTarea(Tarea tarea) async {
     await _databaseHelper.deleteTask(tarea);
     await loadTareasPorProyecto(tarea.proyectoId);
+    _tareasEliminadas++;
+
+    if (_tareasEliminadas % 3 == 0 && _adManager != null) {
+      await _adManager!.showInterstitial();
+    }
   }
 
   Future<void> completarTarea(Tarea tarea) async {
@@ -50,6 +67,11 @@ class TaskProvider extends ChangeNotifier {
     if (index != -1) {
       _tareas[index] = tareaCompletada;
       notifyListeners();
+    }
+    _tareasCompletadas++;
+
+    if (_tareasCompletadas % 2 == 0 && _adManager != null) {
+      await _adManager!.showInterstitial();
     }
   }
 

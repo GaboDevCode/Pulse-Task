@@ -1,77 +1,37 @@
-import 'dart:ui';
-
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
-import 'package:pulse_task/configuration/configurationRemote/configurationRemote.dart';
-import 'package:pulse_task/configuration/notifications/notification_service.dart';
 import 'package:pulse_task/configuration/router/routes.dart';
 import 'package:pulse_task/configuration/theme/app_theme.dart';
 import 'package:pulse_task/domain/datasources/local/database_helper.dart';
-import 'package:pulse_task/firebase_options.dart';
 import 'package:pulse_task/presentation/providers/profile_provider/profile_provider.dart';
 import 'package:pulse_task/presentation/providers/project_provider/projectprovider.dart';
 import 'package:pulse_task/presentation/providers/task_provider/taskprojectprovider.dart';
 import 'package:pulse_task/presentation/providers/theme_provider/ThemeProvider.dart';
 import 'package:flutter/services.dart';
-import 'package:pulse_task/presentation/widgets/InterstitialAdManager.dart';
-
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // 1. Obtiene la zona horaria
-  final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
 
-  // 2. Inicializa la base de datos de timezone (si usas el paquete)
-  tz.initializeTimeZones(); // <-- ¡Importante!
-  // 3. Configura la ubicación local
-  tz.setLocalLocation(tz.getLocation(currentTimeZone));
-
-  // inicializar firebase
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  //configuracion remota
-  await initializeRemoteConfig();
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
-
+  // Inicializaciones esenciales y rápidas
+  tz.initializeTimeZones();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
 
-  await MobileAds.instance.initialize(); //Inicializanodo Admob
-
-  // 2. Inicializar la base de datos ANTES de runApp
+  // Inicialización CRÍTICA: Base de datos local
   final database = DatabaseHelper.instance;
-  final adManager = InterstitialAdManager();
-
-  // 3. Inicializar las notificaciones ANTES de runApp
-  await NotificationService.initialize();
-
   await dotenv.load();
 
   runApp(
     MultiProvider(
       providers: [
-        // 4. Pasar la BD a los providers que lo necesiten (ej: TaskProvider)
-        ChangeNotifierProvider(
-          create: (_) => Projectprovider(adManager, database),
-        ),
+        // Proveedores con adManager
+        ChangeNotifierProvider(create: (_) => Projectprovider(null, database)),
+        ChangeNotifierProvider(create: (_) => TaskProvider(null, database)),
         ChangeNotifierProvider(create: (_) => Themeprovider()),
-        ChangeNotifierProvider(
-          create:
-              (_) => TaskProvider(adManager, database), // Ejemplo: Inyectar BD
-        ),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
       ],
       child: const MyApp(),
@@ -79,12 +39,24 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Inicialización en segundo plano
+  }
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<Themeprovider>().selectedColorIndex;
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.getTheme(themeProvider),

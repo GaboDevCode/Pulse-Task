@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,7 +6,6 @@ import 'package:pulse_task/configuration/correo/message_correo.dart';
 import 'package:pulse_task/presentation/providers/profile_provider/profile_provider.dart';
 
 import 'package:provider/provider.dart';
-import 'package:pulse_task/presentation/widgets/schedulebutton.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -122,7 +120,6 @@ class ProfileOptions extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 8),
         Card(
           color: colorTema,
           child: InkWell(
@@ -168,7 +165,6 @@ class ProfileOptions extends StatelessWidget {
             ),
           ),
         ),
-        ScheduleButton(),
       ],
     );
   }

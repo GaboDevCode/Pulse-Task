@@ -21,6 +21,8 @@ class _DetailsproyectViewState extends State<DetailsproyectView> {
   bool _dialogShown = false;
   late TaskProvider _taskProv;
 
+  final Set<int> _proyectosNotificados = {};
+
   @override
   void initState() {
     super.initState();
@@ -288,17 +290,30 @@ class _DetailsproyectViewState extends State<DetailsproyectView> {
 
     if (proyecto.estado == 'completado') return;
 
-    if ((proyecto.fechaFin != null &&
-            proyecto.fechaFin!.isBefore(
-              currentDate.add(const Duration(days: 3)),
-            )) ||
-        (progreso >= 0.8 && progreso < 1.0)) {
-      NotificationService.sendNotification(
-        'Proyecto casi terminado',
-        '¡Estás cerca de terminar tu proyecto!',
-      );
+    if (_proyectosNotificados.contains(proyecto.id)) return;
+
+    bool faltaPoco =
+        proyecto.fechaFin != null &&
+        proyecto.fechaFin!.isBefore(currentDate.add(const Duration(days: 3)));
+
+    bool casiCompleto = progreso >= 0.8 && progreso < 1.0;
+
+    bool esUrgente = proyecto.estado.toLowerCase() == 'urgente';
+
+    String? titulo;
+    String? mensaje;
+
+    if (esUrgente && faltaPoco) {
+      titulo = 'Atención: Proyecto Urgente';
+    } else if (faltaPoco || casiCompleto) {
+      titulo = 'Atención: Proyecto importante';
+      
+    }
+
+    if (titulo != null) {
+      mensaje = 'Tu proyecto "${proyecto.nombre}" necesita tu atención.';
+      NotificationService.sendNotification(titulo, mensaje);
+      _proyectosNotificados.add(proyecto.id!);
     }
   }
 }
-
-// Método para verificar el estado del proyecto y enviar la notificación

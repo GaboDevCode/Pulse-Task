@@ -41,9 +41,9 @@ class ProfileProvider extends ChangeNotifier {
   void _handleProfileChange() {
     _profileChangue++;
     if (_profileChangue == 1) {
-      _adManager.showIntersticial().then((shown) {
+      _adManager.showInterstitial().then((shown) {
         if (shown) {
-          _adManager.showIntersticial();
+          _adManager.showInterstitial();
         }
       });
     }

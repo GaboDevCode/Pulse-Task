@@ -32,13 +32,13 @@ class Themeprovider extends ChangeNotifier {
 
   Future<void> _handleColorTheme() async {
     try {
-      final shown = await _adManager.showIntersticial();
+      final shown = await _adManager.showInterstitial();
       if (!shown) {
-        _adManager.showIntersticial();
+        _adManager.showInterstitial();
       }
     } catch (e) {
       debugPrint('Error al mostrar anuncio: $e');
-      _adManager.showIntersticial();
+      _adManager.showInterstitial();
     }
   }
 }
