@@ -14,3 +14,18 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+
+## 
+
+```
+dart run change_app_package_name:main com.gabrieleduardo.pulsetask
+```
+##
+```
+Para agregar el icono para todos los formatos de la app, usamos el paquete -> flutter_launcher_icons
+```
+
+```
+Para agregar configuracion de tema de color del splash o algo referente usamos el paquete ->  flutter_native_splash
+``` 

@@ -1,4 +1,5 @@
 # Miscellaneous
+*.env
 *.class
 *.log
 *.pyc
@@ -12,21 +13,25 @@
 .swiftpm/
 migrate_working_dir/
 
+# Build folders
+build/
+.dart_tool/
+.idea/
+.gradle/
+
 # IntelliJ related
 *.iml
 *.ipr
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
+# VS Code related
+# (Descomenta si no quieres subir tus configuraciones locales)
 #.vscode/
 
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id
-.dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
 .pub-cache/
@@ -39,7 +44,27 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-# Android Studio will place build artifacts here
+# Android Studio build artifacts
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Firebase sensitive files
+google-services.json
+GoogleService-Info.plist
+
+# Environment variables (sensitive data)
+.env
+.env.*
+!.env.example
+
+# Temporary or generated files
+*.tmp
+*.bak
+*.orig
+
+# macOS build folder (if you build for mac)
+macos/Flutter/ephemeral/
+
+# Generated plugin registrants
+**/generated_plugin_registrant.dart

@@ -1,4 +1,4 @@
-package com.example.pulse_task
+package com.gabrieleduardo.pulsetask
 
 import io.flutter.embedding.android.FlutterActivity
 
