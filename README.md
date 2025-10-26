@@ -31,20 +31,6 @@
 - **💾 Almacenamiento Local**: Todos tus datos se guardan de forma segura en tu dispositivo
 - **🎯 Interfaz Intuitiva**: Diseño limpio y fácil de usar con navegación fluida
 
----
-
-## 📥 Descarga
-
-### Android
-
-Descarga la última versión de la aplicación:
-
-<!-- Reemplaza este enlace con tu URL de descarga -->
-**[⬇️ Descargar APK v1.0.0+8](TU_ENLACE_AQUI)**
-
-> **Nota**: Es posible que necesites habilitar la instalación de aplicaciones de fuentes desconocidas en la configuración de tu dispositivo Android.
-
-### Otras Plataformas
 
 
 ---
